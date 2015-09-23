@@ -6,6 +6,7 @@ namespace Training
     [TestClass]
     public class Pepene
     {
+
         [TestMethod]
         public void ValoareNegativa()
         {
@@ -19,6 +20,12 @@ namespace Training
         }
 
         [TestMethod]
+        public void Particular()
+        {
+            Assert.AreEqual("NU", CanBeSplit(2));
+        }
+
+        [TestMethod]
         public void Impar()
         {
             Assert.AreEqual("NU", CanBeSplit(9));
@@ -28,6 +35,8 @@ namespace Training
         {
             if (greutate <= 0)
                 return "Invalid";
+            if (greutate == 2)
+                return "NU";
             return (greutate % 2 == 0) ? "DA" : "NU";
         }
     }
