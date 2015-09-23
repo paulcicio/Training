@@ -55,6 +55,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Bank.cs" />
+    <Compile Include="Bird.cs" />
     <Compile Include="Excel.cs" />
     <Compile Include="Goat.cs" />
     <Compile Include="Pepene.cs" />
