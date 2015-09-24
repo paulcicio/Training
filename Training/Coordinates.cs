@@ -9,7 +9,7 @@ namespace Training
         [TestMethod]
         public void TestMethod1()
         {
-            Assert.AreEqual(0.500000, Heron(0.000000, 0.000000, 1.000000, 1.000000, 0.000000, 1.000000));
+            Assert.AreEqual(0.500000, Math.Round(Heron(0.000000, 0.000000, 1.000000, 1.000000, 0.000000, 1.000000), 6));
         }
 
         public Double Heron(double x1, double y1, double x2, double y2, double x3, double y3)
