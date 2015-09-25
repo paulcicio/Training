@@ -9,15 +9,15 @@ namespace Training
         [TestMethod]
         public void TestMethod1()
         {
-            Assert.AreEqual(4, Pavement (6, 6, 4));
+            Assert.AreEqual(8, Pavement (8, 4, 2));
         }
 
         public double Pavement (double m, double n, double a)
         {
-            if (n <= a)
-                return Math.Ceiling(m / a);
-            else
-                return Math.Ceiling(m / a) * 2;
+            double m1 = Math.Ceiling(m / a);
+            double n1 = Math.Ceiling(n / a);
+            double rock = m1 * n1;
+            return rock; 
         }
     }
 }
