@@ -7,49 +7,79 @@ namespace Training
     public class Encryption
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Encrypt()
         {
-            Assert.AreEqual("neeaircsciaaanaxiucw", EncryptMessage("nicaieri nu e ca acasa", 4 ));
+            Assert.AreEqual("neeaircsciaaanaxiucw", EncryptMessage("nicaieri nu e ca acasa", 4));
         }
 
-        private string EncryptMessage(string message, int nrRows)
+        [TestMethod]
+        public void Decrypt()
         {
-            Console.WriteLine("Introduceti mesajul original: ");
+            Assert.AreEqual("nicaierinuecaacasa", DecryptMessage(EncryptMessage("nicaieri nu e ca acasa", 4), 4).Substring(0, 18));
+        }
+
+        private string EncryptMessage(string message, int numberOfRows)
+        {
+
             string message1 = message.Replace(" ", "");
-            int nrChar = message1.Length;
-            int nrLines = (int) Math.Ceiling((double) nrChar / nrRows);
-            int nrRandomChar = (nrLines * nrRows) - nrChar;
-            Random r = new Random();
-            int num = r.Next(0, 26);
-            char[] litera = new char[nrRandomChar];
-            for (int i = 0; i < nrRandomChar; i++)
+            int numberOfChar = message1.Length;
+            int numberOfLines = (int) Math.Ceiling((double)numberOfChar / numberOfRows);
+            int numberRandomChar = (numberOfLines * numberOfRows) - numberOfChar;
+            char[] letter = new char[numberRandomChar];
+            for (int i = 0; i < numberRandomChar; i++)
             {
-                litera[i] = (char)('a' + num);
+                letter[i] = GenerateRandomChar(numberRandomChar);
             }
 
-            string[] line = new string[nrLines];
-            for (int i = 0; i < nrLines; i++)
+            string[] line = new string[numberOfLines];
+            for (int i = 0; i < numberOfLines; i++)
             {
-                for (int j=0;j<nrChar;j=j+nrLines)
-                    if (i + j < nrChar)
-                        line[i] += message1[i+j];
+                for (int j = 0; j < numberOfChar; j = j + numberOfLines)
+                {
+                    if (i + j < numberOfChar)
+                        line[i] += message1[i + j];
+                }
             }
 
-            for (int i = nrLines-1; i > 0; i--)
+            for (int i = numberOfLines - 1; i > 0; i--)
             {
-                if (nrRandomChar < 1)
+                if (numberRandomChar < 1)
                     break;
                 else
-                    {
-                    line[i] += litera[nrRandomChar - 1];
-                    nrRandomChar--;
-                     }
+                {
+                    line[i] += letter[numberRandomChar - 1];
+                    numberRandomChar--;
+                }
             }
-          
-            string rezultat = null;
-            for (int i = 0; i < nrLines; i++)
-                rezultat += line[i];
-            return rezultat;
+
+            string encryptedMessage = null;
+            for (int i = 0; i < numberOfLines; i++)
+            {
+                encryptedMessage += line[i];
+            }
+               
+            return encryptedMessage;
+        }
+
+        private char GenerateRandomChar(int numberRandomChar)
+        {
+            Random r = new Random();
+            int num = r.Next(0, 26);
+            return (char)('a' + num);
+        }
+
+        private string DecryptMessage(string encryptedMessage, int numberOfRows)
+        {
+            string decryptedMessage = null;
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                for (int j = i; j < encryptedMessage.Length; j= j + numberOfRows)
+                {
+                    if (j < encryptedMessage.Length)
+                        decryptedMessage += encryptedMessage[j];
+                }
+            }          
+            return decryptedMessage;
         }
     }
 }
