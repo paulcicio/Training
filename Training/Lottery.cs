@@ -26,7 +26,6 @@ namespace Training
 
         public double WinTheLottery(int n)
         {
-            Console.WriteLine("Pentru categoriile I, II si III de castig, aveti urmatoarele sanse: ");
             double probability = CalculateCombinations(6, n) * CalculateCombinations(43, 6 - n) / CalculateCombinations(49, 6);
             return Math.Round (probability, 8); 
            

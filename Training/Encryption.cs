@@ -23,7 +23,7 @@ namespace Training
 
             string message1 = message.Replace(" ", "");
             int numberOfChar = message1.Length;
-            int numberOfLines = (int) Math.Ceiling((double)numberOfChar / numberOfRows);
+            int numberOfLines = (int)Math.Ceiling((double)numberOfChar / numberOfRows);
             int numberRandomChar = (numberOfLines * numberOfRows) - numberOfChar;
             char[] letter = new char[numberRandomChar];
             for (int i = 0; i < numberRandomChar; i++)
@@ -57,15 +57,8 @@ namespace Training
             {
                 encryptedMessage += line[i];
             }
-               
-            return encryptedMessage;
-        }
 
-        private char GenerateRandomChar(int numberRandomChar)
-        {
-            Random r = new Random();
-            int num = r.Next(0, 26);
-            return (char)('a' + num);
+            return encryptedMessage;
         }
 
         private string DecryptMessage(string encryptedMessage, int numberOfRows)
@@ -73,13 +66,20 @@ namespace Training
             string decryptedMessage = null;
             for (int i = 0; i < numberOfRows; i++)
             {
-                for (int j = i; j < encryptedMessage.Length; j= j + numberOfRows)
+                for (int j = i; j < encryptedMessage.Length; j = j + numberOfRows)
                 {
                     if (j < encryptedMessage.Length)
                         decryptedMessage += encryptedMessage[j];
                 }
-            }          
+            }
             return decryptedMessage;
+        }
+
+        private char GenerateRandomChar(int numberRandomChar)
+        {
+            Random r = new Random();
+            int num = r.Next(0, 26);
+            return (char)('a' + num);
         }
     }
 }
