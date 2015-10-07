@@ -49,7 +49,11 @@ namespace Training
             {
                 encryptedMessage += line[i];
             }
-
+            foreach (char c in encryptedMessage)
+            {
+                if (!char.IsLetter(c))
+                    encryptedMessage.Replace(c.ToString(), "");
+            }
             return encryptedMessage;
         }
 
@@ -85,8 +89,8 @@ namespace Training
         private char GenerateRandomChar(int numberRandomChar)
         {
             Random r = new Random();
-            int num = r.Next(0, 26);
-            return (char)('a' + num);
+            int num = r.Next(0, 15);
+            return (char)(' ' + num);
         }
     }
 }
