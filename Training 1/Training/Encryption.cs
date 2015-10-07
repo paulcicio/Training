@@ -9,16 +9,16 @@ namespace Training
         [TestMethod]
         public void Encrypt()
         {
-            Assert.AreEqual("neeaircsciaaanaxiucw", EncryptMessage("nicaieri nu e ca acasa", 4));
+            Assert.AreEqual("neeaircsciaaanaiuc", EncryptMessage("nicaieri nu e ca acasa", 4, false));
         }
 
         [TestMethod]
         public void Decrypt()
         {
-            Assert.AreEqual("nicaierinuecaacasa", DecryptMessage(EncryptMessage("nicaieri nu e ca acasa", 4), 4).Substring(0, 18));
+            Assert.AreEqual("nicaierinuecaacasa", DecryptMessage(EncryptMessage("nicaieri nu e ca acasa", 4, true), 4, 2));
         }
 
-        private string EncryptMessage(string message, int numberOfRows)
+        private string EncryptMessage(string message, int numberOfRows, bool withSpecialChar)
         {
 
             string message1 = message.Replace(" ", "");
@@ -45,15 +45,26 @@ namespace Training
             }
 
             string encryptedMessage = null;
+            string encryptedMessage2 = null;
             for (int i = 0; i < numberOfLines; i++)
             {
                 encryptedMessage += line[i];
             }
+
+            encryptedMessage2 = EliminateSpecialChar(encryptedMessage, encryptedMessage2);
+            if (withSpecialChar)
+                return encryptedMessage2;
+            else return encryptedMessage;
+        }
+
+        private static string EliminateSpecialChar(string encryptedMessage, string encryptedMessage2)
+        {
             foreach (char c in encryptedMessage)
             {
-                if (!char.IsLetter(c))
-                    encryptedMessage.Replace(c.ToString(), "");
+                if (char.IsLetter(c))
+                    encryptedMessage2 += c;
             }
+
             return encryptedMessage;
         }
 
@@ -72,9 +83,10 @@ namespace Training
             return line;
         }
 
-        private string DecryptMessage(string encryptedMessage, int numberOfRows)
+        private string DecryptMessage(string encryptedMessage, int numberOfRows, int numberRandomChar)
         {
             string decryptedMessage = null;
+            string decryptedMessage2 = null;
             for (int i = 0; i < numberOfRows; i++)
             {
                 for (int j = i; j < encryptedMessage.Length; j = j + numberOfRows)
@@ -83,14 +95,15 @@ namespace Training
                         decryptedMessage += encryptedMessage[j];
                 }
             }
-            return decryptedMessage;
+            decryptedMessage2 = decryptedMessage.Substring(0, encryptedMessage.Length - numberRandomChar);
+            return decryptedMessage2;
         }
 
         private char GenerateRandomChar(int numberRandomChar)
         {
             Random r = new Random();
             int num = r.Next(0, 15);
-            return (char)(' ' + num);
+            return (char)(num);
         }
     }
 }
