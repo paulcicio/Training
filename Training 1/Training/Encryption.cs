@@ -31,15 +31,7 @@ namespace Training
                 letter[i] = GenerateRandomChar(numberRandomChar);
             }
 
-            string[] line = new string[numberOfLines];
-            for (int i = 0; i < numberOfLines; i++)
-            {
-                for (int j = 0; j < numberOfChar; j = j + numberOfLines)
-                {
-                    if (i + j < numberOfChar)
-                        line[i] += message1[i + j];
-                }
-            }
+            string[] line = CodeMessageOnLines(message1, numberOfChar, numberOfLines);
 
             for (int i = numberOfLines - 1; i > 0; i--)
             {
@@ -59,6 +51,21 @@ namespace Training
             }
 
             return encryptedMessage;
+        }
+
+        private static string[] CodeMessageOnLines(string message1, int numberOfChar, int numberOfLines)
+        {
+            string[] line = new string[numberOfLines];
+            for (int i = 0; i < numberOfLines; i++)
+            {
+                for (int j = 0; j < numberOfChar; j = j + numberOfLines)
+                {
+                    if (i + j < numberOfChar)
+                        line[i] += message1[i + j];
+                }
+            }
+
+            return line;
         }
 
         private string DecryptMessage(string encryptedMessage, int numberOfRows)
