@@ -16,7 +16,17 @@ namespace Anagram
         {
             int numberOfChar = word.Length;
             int numberOfAnagrams = (Permutation(numberOfChar)) - 1;
+            int [] count = new int [numberOfChar + 1]; 
+            foreach (char c in word)
+            {
+                ++count[c];
+            }
+            for (int i = 0; i < numberOfChar; i++)
+            {
+                 numberOfAnagrams = Permutation(numberOfChar) / Permutation(count[i]);
+            }
             return numberOfAnagrams;
+            
         }
 
         private int Permutation(int number)

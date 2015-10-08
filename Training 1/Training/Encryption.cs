@@ -19,33 +19,12 @@ namespace Training
             string message1 = message.Replace(" ", "");
             int numberOfChar = message1.Length;
             int numberOfLines = CalculateNumberOfLines(message1, numberOfColumns);
-            int numberRandomChar = (numberOfLines * numberOfColumns) - numberOfChar;
-            char[] letter = new char[numberRandomChar];
-            for (int i = 0; i < numberRandomChar; i++)
-            {
-                letter[i] = GenerateRandomChar(numberRandomChar);
-            }
-
-            string[] line = CodeMessageOnLines(message1, numberOfColumns);
-
-            for (int i = numberOfLines - 1; i > 0; i--)
-            {
-                if (numberRandomChar < 1)
-                    break;
-                else
-                {
-                    line[i] += letter[numberRandomChar - 1];
-                    numberRandomChar--;
-                }
-            }
-
-            string encryptedMessage = null;
+            int numberOfRandomChar = (numberOfLines * numberOfColumns) - numberOfChar;
+            char[] letter = new char[numberOfRandomChar];
+            for (int i = 0; i < numberOfRandomChar; i++)
+                message1 += GenerateRandomChar();
+            string encryptedMessage = CodeMessageOnLines(message1, numberOfColumns);
             string encryptedMessage2 = null;
-            for (int i = 0; i < numberOfLines; i++)
-            {
-                encryptedMessage += line[i];
-            }
-
             encryptedMessage2 = EliminateSpecialChar(encryptedMessage, encryptedMessage2);
             return encryptedMessage2;
         }
@@ -61,16 +40,17 @@ namespace Training
             return encryptedMessage;
         }
 
-        private static string[] CodeMessageOnLines(string message1, int numberOfColumns)
+        private static string CodeMessageOnLines(string message, int numberOfColumns)
         {
-            int numberOfLines = CalculateNumberOfLines(message1, numberOfColumns);
-            string[] line = new string[numberOfLines];
-           
+            int numberOfLines = CalculateNumberOfLines(message, numberOfColumns);
+            string line = string.Empty;
+
             for (int i = 0; i < numberOfLines; i++)
             {
                 for (int j = 0; j < numberOfColumns; j++)
                 {
-                    line[i] += message1[j * numberOfLines + i];
+                    if ((j * numberOfLines + i) < message.Length)
+                        line += message[j * numberOfLines + i];
                 }
             }
 
@@ -88,7 +68,8 @@ namespace Training
             {
                 for (int j = 0; j < numberOfLines; j++)
                 {
-                    decryptedMessage += encryptedMessage[j * numberOfColumns + i];
+                    if ((j * numberOfColumns + i) < encryptedMessage.Length)
+                        decryptedMessage += encryptedMessage[j * numberOfColumns + i];
                 }
             }
             foreach (char c in decryptedMessage)
@@ -99,11 +80,11 @@ namespace Training
             return decryptedMessage2;
         }
 
-        private char GenerateRandomChar(int numberRandomChar)
+        private char GenerateRandomChar()
         {
             Random r = new Random();
             int num = r.Next(0, 15);
-            return (char)(num);
+            return (char)(' ' + num);
         }
 
         private static int CalculateNumberOfLines(string message1, int numberOfColumns)

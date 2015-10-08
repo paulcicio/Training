@@ -12,26 +12,25 @@ namespace Restaurant
             Assert.AreEqual(3960, CalculateLeastCommonMultiple(1980, 88));
         }
 
-        
+
         private int CalculateLeastCommonMultiple(int x, int y)
-{
-    int cmmmc = (x * y) / CalculateGreatestCommonDivisor(x, y);
-    return cmmmc;
-}
-        
+        {
+            int cmmmc = (x * y) / CalculateGreatestCommonDivisor(x, y);
+            return cmmmc;
+        }
+
 
         private int CalculateGreatestCommonDivisor(int a, int b)
         {
-            int rest = (a % b);
-            while (rest != 0)
+            int difference = (a % b);
+            while (difference != 0)
             {
-                a=b;
-                b=rest;
-                rest = a % b;
+                a = b;
+                b = difference;
+                difference = a % b;
             }
-        return b;
+            return b;
         }
     }
 }
 
-       
