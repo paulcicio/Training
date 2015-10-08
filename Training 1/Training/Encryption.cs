@@ -7,31 +7,26 @@ namespace Training
     public class Encryption
     {
         [TestMethod]
-        public void Encrypt()
-        {
-            Assert.AreEqual("neeaircsciaaanaiuc", EncryptMessage("nicaieri nu e ca acasa", 4, false));
-        }
-
-        [TestMethod]
         public void Decrypt()
         {
-            Assert.AreEqual("nicaierinuecaacasa", DecryptMessage(EncryptMessage("nicaieri nu e ca acasa", 4, true), 4, 2));
+            var messageEncrypted = EncryptMessage("nicaieri nu e ca acasa", 4);
+            Assert.AreEqual("nicaierinuecaacasa", DecryptMessage(messageEncrypted, 4));
         }
 
-        private string EncryptMessage(string message, int numberOfRows, bool withSpecialChar)
+        private string EncryptMessage(string message, int numberOfColumns)
         {
 
             string message1 = message.Replace(" ", "");
             int numberOfChar = message1.Length;
-            int numberOfLines = (int)Math.Ceiling((double)numberOfChar / numberOfRows);
-            int numberRandomChar = (numberOfLines * numberOfRows) - numberOfChar;
+            int numberOfLines = CalculateNumberOfLines(message1, numberOfColumns);
+            int numberRandomChar = (numberOfLines * numberOfColumns) - numberOfChar;
             char[] letter = new char[numberRandomChar];
             for (int i = 0; i < numberRandomChar; i++)
             {
                 letter[i] = GenerateRandomChar(numberRandomChar);
             }
 
-            string[] line = CodeMessageOnLines(message1, numberOfChar, numberOfLines);
+            string[] line = CodeMessageOnLines(message1, numberOfColumns);
 
             for (int i = numberOfLines - 1; i > 0; i--)
             {
@@ -52,9 +47,7 @@ namespace Training
             }
 
             encryptedMessage2 = EliminateSpecialChar(encryptedMessage, encryptedMessage2);
-            if (withSpecialChar)
-                return encryptedMessage2;
-            else return encryptedMessage;
+            return encryptedMessage2;
         }
 
         private static string EliminateSpecialChar(string encryptedMessage, string encryptedMessage2)
@@ -68,34 +61,41 @@ namespace Training
             return encryptedMessage;
         }
 
-        private static string[] CodeMessageOnLines(string message1, int numberOfChar, int numberOfLines)
+        private static string[] CodeMessageOnLines(string message1, int numberOfColumns)
         {
+            int numberOfLines = CalculateNumberOfLines(message1, numberOfColumns);
             string[] line = new string[numberOfLines];
+           
             for (int i = 0; i < numberOfLines; i++)
             {
-                for (int j = 0; j < numberOfChar; j = j + numberOfLines)
+                for (int j = 0; j < numberOfColumns; j++)
                 {
-                    if (i + j < numberOfChar)
-                        line[i] += message1[i + j];
+                    line[i] += message1[j * numberOfLines + i];
                 }
             }
 
             return line;
         }
 
-        private string DecryptMessage(string encryptedMessage, int numberOfRows, int numberRandomChar)
+        private string DecryptMessage(string encryptedMessage, int numberOfColumns)
         {
             string decryptedMessage = null;
             string decryptedMessage2 = null;
-            for (int i = 0; i < numberOfRows; i++)
+
+
+            int numberOfLines = CalculateNumberOfLines(encryptedMessage, numberOfColumns);
+            for (int i = 0; i < numberOfColumns; i++)
             {
-                for (int j = i; j < encryptedMessage.Length; j = j + numberOfRows)
+                for (int j = 0; j < numberOfLines; j++)
                 {
-                    if (j < encryptedMessage.Length)
-                        decryptedMessage += encryptedMessage[j];
+                    decryptedMessage += encryptedMessage[j * numberOfColumns + i];
                 }
             }
-            decryptedMessage2 = decryptedMessage.Substring(0, encryptedMessage.Length - numberRandomChar);
+            foreach (char c in decryptedMessage)
+            {
+                if (char.IsLetter(c))
+                    decryptedMessage2 += c;
+            }
             return decryptedMessage2;
         }
 
@@ -105,5 +105,13 @@ namespace Training
             int num = r.Next(0, 15);
             return (char)(num);
         }
+
+        private static int CalculateNumberOfLines(string message1, int numberOfColumns)
+        {
+            int numberOfChar = message1.Length;
+            int numberOfLines = (int)Math.Ceiling((double)numberOfChar / numberOfColumns);
+            return numberOfLines;
+        }
+
     }
 }
