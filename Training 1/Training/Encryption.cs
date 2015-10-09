@@ -23,10 +23,10 @@ namespace Training
             char[] letter = new char[numberOfRandomChar];
             for (int i = 0; i < numberOfRandomChar; i++)
                 message1 += GenerateRandomChar();
-            string encryptedMessage = CodeMessageOnLines(message1, numberOfColumns);
-            string encryptedMessage2 = null;
-            encryptedMessage2 = EliminateSpecialChar(encryptedMessage, encryptedMessage2);
-            return encryptedMessage2;
+            string encryptedMessage = CodeMessage(message1, numberOfColumns);
+            string encryptedMessageWithoutRandomChar = null;
+            encryptedMessageWithoutRandomChar = EliminateSpecialChar(encryptedMessage, encryptedMessageWithoutRandomChar);
+            return encryptedMessageWithoutRandomChar;
         }
 
         private static string EliminateSpecialChar(string encryptedMessage, string encryptedMessage2)
@@ -40,7 +40,7 @@ namespace Training
             return encryptedMessage;
         }
 
-        private static string CodeMessageOnLines(string message, int numberOfColumns)
+        private static string CodeMessage(string message, int numberOfColumns)
         {
             int numberOfLines = CalculateNumberOfLines(message, numberOfColumns);
             string line = string.Empty;

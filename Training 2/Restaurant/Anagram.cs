@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace Anagram
 {
@@ -9,34 +10,34 @@ namespace Anagram
         [TestMethod]
         public void NoDuplicateChars()
         {
-            Assert.AreEqual(119, Anagrammatise("carte"));
+            Assert.AreEqual(4, Anagrammatise("mama"));
         }
 
         private int Anagrammatise(string word)
         {
             int numberOfChar = word.Length;
-            int numberOfAnagrams = (Permutation(numberOfChar)) - 1;
-            int [] count = new int [numberOfChar + 1]; 
+            int numberOfAnagrams = 0; //(Permutation(numberOfChar)) - 1;
+            Dictionary<char, int> countEachLetter = new Dictionary<char, int>(); 
             foreach (char c in word)
             {
-                ++count[c];
+                countEachLetter[c]++;
             }
-            for (int i = 0; i < numberOfChar; i++)
+            foreach (char a in countEachLetter.Keys)
             {
-                 numberOfAnagrams = Permutation(numberOfChar) / Permutation(count[i]);
+                 numberOfAnagrams = Factorial(numberOfChar) / Factorial(countEachLetter[a]);
             }
             return numberOfAnagrams;
             
         }
 
-        private int Permutation(int number)
+        private int Factorial(int number)
         {
-            int factorial = 1;
+            int result = 1;
             for (int i = 1; i<= number; i++)
             {
-                 factorial = factorial * i;
+                 result = result * i;
             }
-            return factorial;
+            return result;
         }
     }
 }
