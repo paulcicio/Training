@@ -16,28 +16,26 @@ namespace Training
         private string EncryptMessage(string message, int numberOfColumns)
         {
 
-            string message1 = message.Replace(" ", "");
-            int numberOfChar = message1.Length;
-            int numberOfLines = CalculateNumberOfLines(message1, numberOfColumns);
+            string messageWithoutSpaces = EliminateSpecialChar(message);
+            int numberOfChar = messageWithoutSpaces.Length;
+            int numberOfLines = CalculateNumberOfLines(messageWithoutSpaces, numberOfColumns);
             int numberOfRandomChar = (numberOfLines * numberOfColumns) - numberOfChar;
-            char[] letter = new char[numberOfRandomChar];
             for (int i = 0; i < numberOfRandomChar; i++)
-                message1 += GenerateRandomChar();
-            string encryptedMessage = CodeMessage(message1, numberOfColumns);
-            string encryptedMessageWithoutRandomChar = null;
-            encryptedMessageWithoutRandomChar = EliminateSpecialChar(encryptedMessage, encryptedMessageWithoutRandomChar);
-            return encryptedMessageWithoutRandomChar;
+                messageWithoutSpaces += GenerateRandomChar();
+            return CodeMessage(messageWithoutSpaces, numberOfColumns);
+
         }
 
-        private static string EliminateSpecialChar(string encryptedMessage, string encryptedMessage2)
+        private static string EliminateSpecialChar(string encryptedMessage)
         {
+            var result = string.Empty;
             foreach (char c in encryptedMessage)
             {
                 if (char.IsLetter(c))
-                    encryptedMessage2 += c;
+                   result += c;
             }
 
-            return encryptedMessage;
+            return result;
         }
 
         private static string CodeMessage(string message, int numberOfColumns)
@@ -60,7 +58,7 @@ namespace Training
         private string DecryptMessage(string encryptedMessage, int numberOfColumns)
         {
             string decryptedMessage = null;
-            string decryptedMessage2 = null;
+            string result = null;
 
 
             int numberOfLines = CalculateNumberOfLines(encryptedMessage, numberOfColumns);
@@ -75,9 +73,9 @@ namespace Training
             foreach (char c in decryptedMessage)
             {
                 if (char.IsLetter(c))
-                    decryptedMessage2 += c;
+                    result += c;
             }
-            return decryptedMessage2;
+            return result;
         }
 
         private char GenerateRandomChar()
