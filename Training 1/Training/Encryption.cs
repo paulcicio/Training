@@ -17,13 +17,19 @@ namespace Training
         {
 
             string messageWithoutSpaces = EliminateSpecialChar(message);
+            messageWithoutSpaces = AddRandomChar(numberOfColumns, messageWithoutSpaces);
+            return CodeMessage(messageWithoutSpaces, numberOfColumns);
+
+        }
+
+        private string AddRandomChar(int numberOfColumns, string messageWithoutSpaces)
+        {
             int numberOfChar = messageWithoutSpaces.Length;
             int numberOfLines = CalculateNumberOfLines(messageWithoutSpaces, numberOfColumns);
             int numberOfRandomChar = (numberOfLines * numberOfColumns) - numberOfChar;
             for (int i = 0; i < numberOfRandomChar; i++)
                 messageWithoutSpaces += GenerateRandomChar();
-            return CodeMessage(messageWithoutSpaces, numberOfColumns);
-
+            return messageWithoutSpaces;
         }
 
         private static string EliminateSpecialChar(string encryptedMessage)
@@ -70,12 +76,8 @@ namespace Training
                         decryptedMessage += encryptedMessage[j * numberOfColumns + i];
                 }
             }
-            foreach (char c in decryptedMessage)
-            {
-                if (char.IsLetter(c))
-                    result += c;
-            }
-            return result;
+         
+            return result = EliminateSpecialChar(decryptedMessage);
         }
 
         private char GenerateRandomChar()
