@@ -7,7 +7,7 @@ namespace Binary_operations
     public class Base2operations
     {
         [TestMethod]
-        public void TestMethod1()
+        public void BaseConversion()
         {
             byte[] expectedResult = new byte[] { 1, 1, 0, 1, 0, 0, 0, 1 };
             CollectionAssert.AreEquivalent(expectedResult, ConvertToBase(209, 2));
@@ -15,7 +15,7 @@ namespace Binary_operations
         }
 
         [TestMethod]
-        public void TestMethod2()
+        public void LeftShift()
         {
             byte[] expectedResult = new byte[] { 0, 0, 1, 0, 1, 1, 1, 0 };
             byte[] actualResult = new byte[] { 0, 0, 0, 1, 0, 1, 1, 1 };
@@ -26,7 +26,7 @@ namespace Binary_operations
         }
 
         [TestMethod]
-        public void TestMethod3()
+        public void RightShift()
         {
             byte[] expectedResult = new byte[] { 0, 0, 0, 0, 1, 0, 1, 1 };
             byte[] actualResult = new byte[] { 0, 0, 0, 1, 0, 1, 1, 1 };
@@ -35,11 +35,38 @@ namespace Binary_operations
         }
 
         [TestMethod]
-        public void TestMethod4()
+        public void LessThan()
         {
             byte[] a = new byte[] { 1, 0, 0, 1, 0, 1, 1, 1, 0 };
             byte[] b = new byte[] { 1, 0, 0, 1, 0, 1, 1, 1 };
-            CollectionAssert.AreEquivalent(b, BitwiseLessThan(a, b));
+            Assert.AreEqual(false, BitwiseLessThan(a, b));
+
+        }
+
+        [TestMethod]
+        public void GreaterThan()
+        {
+            byte[] a = new byte[] { 1, 1, 0, 1, 0, 1, 1, 1, 0 };
+            byte[] b = new byte[] { 1, 0, 0, 1, 0, 1, 1, 1 };
+            Assert.AreEqual(true, BitwiseGreaterThan(a, b));
+
+        }
+
+        [TestMethod]
+        public void Equal()
+        {
+            byte[] a = new byte[] { 1, 0, 0, 1, 0, 1, 1, 1, 0 };
+            byte[] b = new byte[] { 1, 0, 0, 1, 0, 1, 1, 1 };
+            Assert.AreEqual(false, BitwiseEqual(a, b));
+
+        }
+
+        [TestMethod]
+        public void NotEqual()
+        {
+            byte[] a = new byte[] { 1, 0, 0, 1, 0, 1, 1, 1, 0 };
+            byte[] b = new byte[] { 1, 0, 0, 1, 0, 1, 1, 1 };
+            Assert.AreEqual(true, BitwiseNotEqual(a, b));
 
         }
 
@@ -140,24 +167,38 @@ namespace Binary_operations
             return right;
         }
 
-        public byte[] BitwiseLessThan(byte[] a, byte[] b)
+        public bool BitwiseLessThan(byte[] a, byte[] b)
         {
             var size1 = a.Length;
             var size2 = b.Length;
             if (size1 > size2)
-                return b;
-            else if (size2 > size1)
-                return a;
+                return false;
 
             for (int i = 0; i < size1 - 1; i++)
             {
                 if (a[i] > b[i])
-                    return b;
-                else if (b[i] > a[i])
-                    return a;
+                    return false;
+
             }
 
-            return a; //a=b
+            return true;
+        }
+
+        public bool BitwiseGreaterThan(byte[] a, byte[] b)
+        {
+
+            return (BitwiseLessThan(b, a)) ? true : false;
+
+        }
+
+        public bool BitwiseEqual(byte[] a, byte[] b)
+        {
+            return (BitwiseLessThan(b, a) == true && BitwiseLessThan(a, b) == true) ? true : false;
+        }
+
+        public bool BitwiseNotEqual(byte[] a, byte[] b)
+        {
+            return (BitwiseLessThan(b, a) != BitwiseLessThan(a, b)) ? true : false;
         }
     }
 }
