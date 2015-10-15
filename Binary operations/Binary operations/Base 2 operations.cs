@@ -70,6 +70,16 @@ namespace Binary_operations
 
         }
 
+        [TestMethod]
+        public void Addition()
+        {
+            byte[] a = new byte[] { 0, 0, 1, 0, 1, 1, 0, 1 };
+            byte[] b = new byte[] { 0, 0, 0, 1, 1, 0, 0, 1 };
+            byte[] expectedValue = new byte[] { 0, 1, 0, 0, 0, 1, 1, 0 };
+            CollectionAssert.AreEquivalent(expectedValue, BitwiseAddition(a, b));
+
+        }
+
         public byte[] ConvertToBase(uint number, uint toBase)
         {
             byte[] result = new byte[0];
@@ -165,6 +175,69 @@ namespace Binary_operations
             for (int i = 0; i <= size - 1; i++)
                 right[i + 1] = number[i];
             return right;
+        }
+
+        //public byte BitwiseAdd(byte a, byte b)
+        //{
+        //    byte carry = 0;
+        //    if ((a == 1) && (b == 1))
+        //    {
+
+        //        return 10;
+        //    }
+        //    else if ((a == 0) && (b == 0))
+        //        return 0;
+        //    return 1;
+        //}
+
+        public byte[] BitwiseAddition(byte[] x, byte[] y)
+        {
+            int max = MaxValue(x, y);
+            byte[] result = new byte[8];
+            uint carry = 0;
+
+            for (int i = max - 1; i >= 0; i--)
+            {
+                if (x[i] == 1 && y[i] == 1)
+                {
+                    if (carry == 1)
+                        result[i] = 1;
+                    else
+                        result[i] = 0;
+                    carry = 1;
+                }
+                else if (x[i] == 0 && y[i] == 0)
+                {
+                    if (carry == 1)
+                        result[i] = 1;
+                    else
+                    {
+                        result[i] = 0;
+                        carry = 0;
+                    }
+                }
+                else
+                {
+                    if (carry == 1)
+                        result[i] = 0;
+                    else
+                    {
+                        result[i] = 1;
+                        carry = 0;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static int MaxValue(byte[] x, byte[] y)
+        {
+            var size1 = x.Length;
+            var size2 = y.Length;
+            if (size1 >= size2)
+                return size1;
+            else return size2;
         }
 
         public bool BitwiseLessThan(byte[] a, byte[] b)
