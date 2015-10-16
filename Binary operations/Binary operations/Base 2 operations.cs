@@ -9,8 +9,8 @@ namespace Binary_operations
         [TestMethod]
         public void BaseConversion()
         {
-          
-              byte[] expectedResult = new byte[] { 1, 1, 0, 1, 0, 0, 0, 1 };
+
+            byte[] expectedResult = new byte[] { 1, 1, 0, 1, 0, 0, 0, 1 };
             CollectionAssert.AreEquivalent(expectedResult, ConvertToBase(209, 2));
 
         }
@@ -74,10 +74,30 @@ namespace Binary_operations
         [TestMethod]
         public void Addition()
         {
-            byte[] a = new byte[] { 0, 0, 0, 1, 1, 0, 1, 0 };
-            byte[] b = new byte[] { 0, 0, 0, 0, 1, 1, 0, 0 };
-            byte[] expectedValue = new byte[] { 0, 0, 1, 0, 0, 1, 1, 0 };
+            byte[] a = new byte[] { 0, 0, 0, 0, 1, 0, 0, 0 };
+            byte[] b = new byte[] { 0, 0, 0, 0, 1, 0, 0, 0 };
+            byte[] expectedValue = new byte[] { 0, 0, 0, 1, 0, 0, 0, 0 };
             CollectionAssert.AreEquivalent(expectedValue, BitwiseAddition(a, b));
+
+        }
+
+        [TestMethod]
+        public void Multiplication()
+        {
+            byte[] a = new byte[] { 0, 0, 0, 0, 1, 0, 0, 0 };
+            byte[] b = new byte[] { 0, 0, 0, 0, 0, 0, 1, 1 };
+            byte[] expectedValue = new byte[] { 0, 0, 0, 1, 1, 0, 0, 0 };
+            CollectionAssert.AreEquivalent(expectedValue, BitwiseMultiplication(a, b));
+
+        }
+
+        [TestMethod]
+        public void Substraction()
+        {
+            byte[] a = new byte[] { 0, 0, 1, 0, 0, 1, 0, 1 };
+            byte[] b = new byte[] { 0, 0, 0, 1, 0, 0, 0, 1 };
+            byte[] expectedValue = new byte[] { 0, 0, 0, 1, 0, 1, 0, 0 };
+            CollectionAssert.AreEquivalent(expectedValue, BitwiseSubstraction(a, b));
 
         }
 
@@ -178,10 +198,10 @@ namespace Binary_operations
             return right;
         }
 
-     
+
         public byte[] BitwiseAddition(byte[] x, byte[] y)
         {
-            int max = MaxValue(x, y);
+            int max = MaxLength(x, y);
             byte[] result = new byte[max];
             uint carry = 0;
 
@@ -202,7 +222,7 @@ namespace Binary_operations
                     else
                     {
                         result[i] = 0;
-                        
+
                     }
                     carry = 0;
                 }
@@ -211,11 +231,11 @@ namespace Binary_operations
                     if (carry == 1)
                         result[i] = 0;
                     else
-                   {
-                      result[i] = 1;
+                    {
+                        result[i] = 1;
                         carry = 0;
                     }
-                    
+
                 }
             }
             if (carry == 1)
@@ -226,12 +246,71 @@ namespace Binary_operations
             return result;
         }
 
-        public byte[] BitwiseMultiplication(byte[] x, byte[] y)
+        public byte[] BitwiseSubstraction(byte[] x, byte[] y)
         {
+            int max = MaxLength(x, y);
+            byte[] result = new byte[max];
+            uint borrow = 0;
 
+            for (int i = max - 1; i >= 0; i--)
+            {
+                if (x[i] == 0 && y[i] == 1)
+                {
+
+                    result[i] = 1;
+                    borrow = 1;
+
+                }
+                else if (x[i] == 1 && y[i] == 0)
+                {
+                    if (borrow == 1)
+                        result[i] = 0;
+                    else
+                        result[i] = 1;
+
+                }
+                else if (x[i] == 1 && y[i] == 1)
+                {
+                    result[i] = 0;
+
+                }
+
+                else if ((x[i] == 0 && y[i] == 0))
+                {
+                    result[i] = 0;
+
+                }
+
+                return result;
+            }
         }
 
-        private static int MaxValue(byte[] x, byte[] y)
+        public int ConverseToDecimal(byte[] number, uint fromBase)
+        {
+            int result = 0;
+            int power = 0;
+            for (int i = number.Length - 1; i >= 0; i--)
+            {
+                result = (int)(result + number[i] * Math.Pow(fromBase, power));
+                power++;
+            }
+
+            return result;
+        }
+
+        public byte[] BitwiseMultiplication(byte[] x, byte[] y)
+        {
+            int multiplier = ConverseToDecimal(y, 2);
+            byte[] result = new byte[8];
+            for (int i = 0; i < multiplier; i++)
+            {
+
+                result = BitwiseAddition(result, BitwiseAddition(x, x));
+            }
+            return result;
+        }
+
+        private static int MaxLength(byte[] x, byte[] y)
         {
             var size1 = x.Length;
             var size2 = y.Length;
