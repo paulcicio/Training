@@ -101,6 +101,17 @@ namespace Binary_operations
 
         }
 
+        [TestMethod]
+        public void Division()
+        {
+            byte[] a = new byte[] { 0, 0, 1, 0, 1, 0, 1, 0 };
+            byte[] b = new byte[] { 0, 0, 0, 0, 0, 1, 1, 0 };
+            byte[] expectedValue = new byte[] { 0, 0, 0, 0, 0, 1, 1, 1 };
+            byte[] actualValue = BitwiseDivision(a, b);
+            CollectionAssert.AreEquivalent(expectedValue, actualValue);
+
+        }
+
         public byte[] ConvertToBase(uint number, uint toBase)
         {
             byte[] result = new byte[0];
@@ -256,8 +267,12 @@ namespace Binary_operations
             {
                 if (x[i] == 0 && y[i] == 1)
                 {
-
-                    result[i] = 1;
+                //    if (borrow == 1)
+                  //  {
+                    //    result[i] = 0;
+                   // }
+                   // else
+                        result[i] = 1;
                     borrow = 1;
 
                 }
@@ -266,23 +281,43 @@ namespace Binary_operations
                     if (borrow == 1)
                         result[i] = 0;
                     else
+                    {
                         result[i] = 1;
+                    }
+                    borrow = 0;
 
                 }
                 else if (x[i] == 1 && y[i] == 1)
                 {
-                    result[i] = 0;
-
+                    if (borrow == 1)
+                    {
+                        result[i] = 1;
+                    }
+                    else
+                    {
+                        result[i] = 0;
+                    }
+                    borrow = 0;
                 }
 
                 else if ((x[i] == 0 && y[i] == 0))
                 {
-                    result[i] = 0;
+                   // if (borrow == 1)
+                   // {
+                    //    result[i] = 1;
+                   // }
+                   // else
+                    {
+                        result[i] = 0;
+                   //     borrow = 0;
+                    }
+                 //   borrow = 0;
 
                 }
 
-                return result;
+
             }
+            return result;
         }
 
         public int ConverseToDecimal(byte[] number, uint fromBase)
@@ -310,6 +345,20 @@ namespace Binary_operations
             return result;
         }
 
+        public byte[] BitwiseDivision(byte[] x, byte[] y)
+        {
+            uint iterations = 0;
+            while ((BitwiseLessThan(y, x) || (BitwiseEqual(x, y)==true)))
+            {
+               
+                x = BitwiseSubstraction(x, y);
+                iterations++;
+                
+            }
+            return ConvertToBase(iterations, 2);
+            
+        }
+
         private static int MaxLength(byte[] x, byte[] y)
         {
             var size1 = x.Length;
@@ -328,7 +377,7 @@ namespace Binary_operations
 
             for (int i = 0; i < size1 - 1; i++)
             {
-                if (a[i] > b[i])
+                if (a[i] >= b[i])
                     return false;
 
             }
@@ -339,7 +388,7 @@ namespace Binary_operations
         public bool BitwiseGreaterThan(byte[] a, byte[] b)
         {
 
-            return (BitwiseLessThan(b, a)) ? true : false;
+            return (!BitwiseLessThan(a, b)) ? true : false;
 
         }
 
