@@ -14,7 +14,7 @@ namespace Recursion
             int[] intermediateTower = new int[10];
             int[] endTower = new int[10];
             int [] expectedValue = new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-            MoveHanoiPlates(4, ref startTower, ref intermediateTower, ref endTower);
+            MoveHanoiPlates(1, ref startTower, ref intermediateTower, ref endTower);
             CollectionAssert.AreEqual(expectedValue, endTower); 
         }
 
