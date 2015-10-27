@@ -13,22 +13,23 @@ namespace Recursion
         }
 
         private int CalculateNumberOfWinningMoves(int[][] matrix, int n)
-        {
-            int count = 0;                                  
+        {                                              
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
-                {
-                    if (matrix[i - 1, j]==0 && matrix[i + 1, j]==0 &&
-                        matrix[i, j - 1]==0 && matrix[i, j + 1]==0)
-                    {
+                {   if (i - 1 < 0 || j - 1 < 0)
+                        break;
+                    if (matrix[i - 1] [j]==0 && matrix[i + 1] [j]==0 &&
+                        matrix[i][j - 1]==0 && matrix[i][j + 1]==0)
+                    {   
                         matrix[i][j] = 1;
-                        CalculateNumberOfWinningMoves(matrix, n+1);
                         count++;
+                        CalculateNumberOfWinningMoves(matrix, n+1);
+                        
                     }
                 }
             }
-            return count;
+            
         }
     }
 }
