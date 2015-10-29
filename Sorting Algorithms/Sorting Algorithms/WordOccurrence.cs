@@ -22,9 +22,14 @@ namespace Sorting_Algorithms
         public void TestMethod1()
         {
             string text = "To be or not to be";
-            List<Word> expectedValue = new List<Word>();            
+            List<Word> expectedValue = new List<Word>();  
+            expectedValue.Add(new Word("to", 2));
+            expectedValue.Add(new Word("be", 2));
+            expectedValue.Add(new Word("or", 1));
+            expectedValue.Add(new Word("not", 1));
             List<Word> actualValue = new List<Word>();
-            Assert.AreEqual(expectedValue, actualValue);
+            actualValue = CalculateNumberOfOccurrences(text);
+            CollectionAssert.AreEqual(expectedValue, actualValue);
         }
 
         public List<Word> CalculateNumberOfOccurrences(string text)
@@ -44,7 +49,7 @@ namespace Sorting_Algorithms
         public int CalculateWordOccurrence(string text, string word)
         {
             string inLowerCase = text.ToLower();
-            string newString = inLowerCase.Replace(word, " ");
+            string newString = inLowerCase.Replace(word, "");
             int counter = (inLowerCase.Length - newString.Length) / word.Length;
             return counter;
         }
@@ -56,13 +61,16 @@ namespace Sorting_Algorithms
             {
                 index = list[i].counter;
                 j = i;
+                var x = list[j];
                 while ((j > 0) && (list[j - 1].counter > index))
                 {
-                    list[j].counter = list[j - 1].counter;
+                    x.counter = list[j - 1].counter;
                     j = j - 1;
                 }
-                list[j].counter = index;
+                x.counter = index;
+                list[j--] = x;
             }
+            
             return list;
         }
 
