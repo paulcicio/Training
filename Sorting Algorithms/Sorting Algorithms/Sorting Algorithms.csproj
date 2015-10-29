@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CharactersInText.cs" />
+    <Compile Include="Elections.cs" />
     <Compile Include="Lottery.cs" />
     <Compile Include="Repair Center.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
