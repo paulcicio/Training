@@ -16,76 +16,77 @@ namespace Sorting_Algorithms
                 this.word = word;
                 this.counter = counter;
             }
-        }    
+        }
 
         [TestMethod]
         public void TestMethod1()
         {
             string text = "To be or not to be";
-            //List<Word> expectedValue = new List<Word>();
-            //List<Word> actualValue = new List<Word>();
-            Assert.AreEqual(1, CalculateNumberOfOccurrences(text));
+            List<Word> expectedValue = new List<Word>();            
+            List<Word> actualValue = new List<Word>();
+            Assert.AreEqual(expectedValue, actualValue);
         }
 
-        public int CalculateNumberOfOccurrences(string text)
+        public List<Word> CalculateNumberOfOccurrences(string text)
         {
             var set = new HashSet<string>(text.ToLower().Split(' '));
-            //for (int i = 0; i < splitted.Length; i++)
-            //{
-            //    int count = 1;
-            //    for (int j = i + 1; j < splitted.Length; j++)
-            //    {
-            //        if (splitted[i] == splitted[j])
-            //        {
-            //            count++;
-            //        }
-            //        else break;
-            //    }
-            //}
-            return 1;
+            List<Word> list = new List<Word>();
+            foreach (string c in set)
+            {
+                Word newWord = new Word();
+                newWord.word = c;
+                newWord.counter = CalculateWordOccurrence(text, c);
+                list.Add(newWord);
+            }
+            return list;
         }
 
-        public Word[] InsertionSort(Word[] array)
-        {           
+        public int CalculateWordOccurrence(string text, string word)
+        {
+            string inLowerCase = text.ToLower();
+            string newString = inLowerCase.Replace(word, " ");
+            int counter = (inLowerCase.Length - newString.Length) / word.Length;
+            return counter;
+        }
+
+        public List<Word> InsertionSort(List<Word> list)
+        {
             int index, i, j;
-            for (i = 1; i < array.Length; i++)
+            for (i = 1; i < list.Count; i++)
             {
-                index = array[i].counter;
+                index = list[i].counter;
                 j = i;
-                while ((j > 0) && (array[j - 1].counter > index))
+                while ((j > 0) && (list[j - 1].counter > index))
                 {
-                    array[j].counter = array[j - 1].counter;
+                    list[j].counter = list[j - 1].counter;
                     j = j - 1;
                 }
-                array[j].counter = index;
+                list[j].counter = index;
             }
-            return array;
+            return list;
         }
 
-        public void BinarySearch(Word[] inputArray, int key, int min, int max)
+        public void BinarySearch(List<Word> list, int key, int min, int max)
         {
-            //if (min > max)            
-            //    break;
-            
-            //else
-            //{
+            while (min < max)
+            {
                 int mid = (min + max) / 2;
-                if (key == inputArray[mid].counter)
+                if (key == list[mid].counter)
                 {
-                     ++mid;
+                    ++mid;
                 }
-                else if (key < inputArray[mid].counter)
+                else if (key < list[mid].counter)
                 {
-                    BinarySearch(inputArray, key, min, mid - 1);
+                    BinarySearch(list, key, min, mid - 1);
                 }
                 else
                 {
-                    BinarySearch(inputArray, key, mid + 1, max);
+                    BinarySearch(list, key, mid + 1, max);
                 }
             }
         }
     }
-
+}
 
 
 
