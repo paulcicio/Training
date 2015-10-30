@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sorting_Algorithms
 {
@@ -27,14 +28,16 @@ namespace Sorting_Algorithms
             expectedValue.Add(new Candidate("Tariceanu", 508572));
             expectedValue.Add(new Candidate("Macovei", 421648));
             List<Candidate> actualValue = new List<Candidate>();
-            List<Candidate> listPerSection = new List<Candidate>();
-            listPerSection.Add(new Candidate("Iohannis", 6288769));
-            listPerSection.Add(new Candidate("Tonta", 3836093));
+            List<Candidate> listPerSection = new List<Candidate>();            
             listPerSection.Add(new Candidate("Tariceanu", 508572));
             listPerSection.Add(new Candidate("Macovei", 421648));
+            listPerSection.Add(new Candidate("Iohannis", 6288769));
+            listPerSection.Add(new Candidate("Tonta", 3836093));
             List<List<Candidate>> totalList = new List<List<Candidate>>();
             totalList.Add(listPerSection);
             actualValue = CalculateTotalNumberOfVotes(totalList);
+            List<Candidate> actual = new List<Candidate>();
+            actual = InsertionSort(actualValue);
             CollectionAssert.AreEqual(expectedValue, actualValue);
         }
 
@@ -65,68 +68,57 @@ namespace Sorting_Algorithms
         }
 
         public List<Candidate> CalculateTotalNumberOfVotes(List<List<Candidate>> listPerSection)
-        {            
-            List<Candidate> lists = new List<Candidate>();
-            foreach (List<Candidate> list in listPerSection)            
-            foreach (Candidate candidate in list)
+        {
+            List<Candidate> finalList = new List<Candidate>();
+            bool found = false;
+
+            for (int i = 0; i < listPerSection.Count; i++)
             {
-                Candidate newCandidate = new Candidate();
-                newCandidate.name = candidate.name;
-                newCandidate.numberOfVotes = candidate.numberOfVotes;
-
-                    Candidate oldCandidate = lists.Find(element => element.name == newCandidate.name);
-                    if (oldCandidate.name!=null)
+                List<Candidate> currentSection = listPerSection[i];
+                for (int j = 0; j < currentSection.Count; j++)
+                {
+                    found = false;
+                    Candidate currentCandidate = currentSection[j];
+                    for (int k = 0; k < finalList.Count; k++)
                     {
-
-                        newCandidate.numberOfVotes += oldCandidate.numberOfVotes;
-                        lists.Remove(oldCandidate);
+                        if (finalList.ElementAt(k).name == currentCandidate.name)
+                        {
+                            found = true;
+                            currentCandidate.numberOfVotes += finalList.ElementAt(k).numberOfVotes;
+                            finalList.Remove(finalList.ElementAt(k));
+                            finalList.Add(currentCandidate);
+                            break;
+                        }
                     }
-
-                    lists.Add(newCandidate);
+                    if (found == false)
+                    {
+                        finalList.Add(currentCandidate);
+                    }
                 }
-            return lists;
+            }
+                        
+            return finalList;
         }
 
         public List<Candidate> InsertionSort(List<Candidate> list)
         {
             int i, j;
-            double index;
+           
             for (i = 1; i < list.Count; i++)
             {
-                index = list[i].numberOfVotes;
-                j = i;
-                var x = list[j];
-                while ((j > 0) && (list[j - 1].numberOfVotes > index))
-                {
-                    x.numberOfVotes = list[j - 1].numberOfVotes;
-                    j = j - 1;
-                }
-                x.numberOfVotes = index;
-                list[j--] = x;
+                for (int k = i; k > 0 && list[k].numberOfVotes < list[k - 1].numberOfVotes; k--)
+                    Swap(list, k, k - 1);               
             }
-
+            list.Reverse();
             return list;
         }
 
-        public void BinarySearch(List<Candidate> list, double key, int min, int max)
+        private static void Swap(List <Candidate> list, int i, int j)
         {
-            while (min < max)
-            {
-                int mid = (min + max) / 2;
-                if (key == list[mid].numberOfVotes)
-                {
-                    ++mid;
-                }
-                else if (key < list[mid].numberOfVotes)
-                {
-                    BinarySearch(list, key, min, mid - 1);
-                }
-                else
-                {
-                    BinarySearch(list, key, mid + 1, max);
-                }
-            }
-        }
+            Candidate aux = list[i];
+            list[i] = list[j];
+            list[j] = aux;
+        }       
     }
 }
 
