@@ -19,7 +19,7 @@ namespace Sorting_Algorithms
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void WordOccurrences()
         {
             string text = "To be or not to be";
             List<Word> expectedValue = new List<Word>();  
