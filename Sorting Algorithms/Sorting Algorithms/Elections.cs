@@ -69,12 +69,21 @@ namespace Sorting_Algorithms
             List<Candidate> lists = new List<Candidate>();
             foreach (List<Candidate> list in listPerSection)            
             foreach (Candidate candidate in list)
-            {   
+            {
                 Candidate newCandidate = new Candidate();
                 newCandidate.name = candidate.name;
                 newCandidate.numberOfVotes = candidate.numberOfVotes;
-                lists.Add(newCandidate);
-            }
+
+                    Candidate oldCandidate = lists.Find(element => element.name == newCandidate.name);
+                    if (oldCandidate.name!=null)
+                    {
+
+                        newCandidate.numberOfVotes += oldCandidate.numberOfVotes;
+                        lists.Remove(oldCandidate);
+                    }
+
+                    lists.Add(newCandidate);
+                }
             return lists;
         }
 
