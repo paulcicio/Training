@@ -27,13 +27,13 @@ namespace Sorting_Algorithms
             Assert.AreEqual("MCMXIX", ConvertToRomanNumerals(1919));
         }
 
-        public string ConvertToRomanNumerals(uint arabNumber)
+        public string ConvertToRomanNumerals(int arabNumber)
         {
             switch (arabNumber)
             {
                 case 0:
-                    {
-                        return "";
+                    {                        
+                        return "";                        
                     }
                 case 1:
                     return "I";
@@ -68,50 +68,32 @@ namespace Sorting_Algorithms
 
         }
 
-        public string BreakDownTheNumber(uint arabNumber)
+        public string BreakDownTheNumber(int arabNumber)
         {
-            string finalResult, stringM, stringCM, stringD, stringCD, stringC, stringXC, stringL, stringXL, stringX, stringIX, stringV, stringIV, stringI;
-            uint differenceCM, differenceM, differenceD, differenceCD, differenceC, differenceXC, differenceL, differenceXL, differenceX, differenceIX, differenceV, differenceIV, differenceI;
-            differenceM = arabNumber % 1000;
-            stringM = ConvertToRomanNumerals(arabNumber - differenceM);
-            arabNumber = differenceM;
-            differenceCM = arabNumber % 900;
-            stringCM = ConvertToRomanNumerals(arabNumber - differenceCM);
-            arabNumber = differenceCM;
-            differenceD = arabNumber % 500;
-            stringD = ConvertToRomanNumerals(arabNumber - differenceD);
-            arabNumber = differenceD;
-            differenceCD = arabNumber % 400;
-            stringCD = ConvertToRomanNumerals(arabNumber - differenceCD);
-            arabNumber = differenceCD;
-            differenceC = arabNumber % 100;
-            stringC = ConvertToRomanNumerals(arabNumber - differenceC);
-            arabNumber = differenceC;
-            differenceXC = arabNumber % 90;
-            stringXC = ConvertToRomanNumerals(arabNumber - differenceXC);
-            arabNumber = differenceXC;
-            differenceL = arabNumber % 50;
-            stringL = ConvertToRomanNumerals(arabNumber - differenceL);
-            arabNumber = differenceL;
-            differenceXL = arabNumber % 40;
-            stringXL = ConvertToRomanNumerals(arabNumber - differenceXL);
-            arabNumber = differenceXL;
-            differenceX = arabNumber % 10;
-            stringX = ConvertToRomanNumerals(arabNumber - differenceX);
-            arabNumber = differenceX;
-            differenceIX = arabNumber % 9;
-            stringIX = ConvertToRomanNumerals(arabNumber - differenceIX);
-            arabNumber = differenceIX;
-            differenceV = arabNumber % 5;
-            stringV = ConvertToRomanNumerals(arabNumber - differenceV);
-            arabNumber = differenceV;
-            differenceIV = arabNumber % 4;
-            stringIV = ConvertToRomanNumerals(arabNumber - differenceIV);
-            arabNumber = differenceIV;
-            differenceI = arabNumber % 1;
-            stringI = ConvertToRomanNumerals(arabNumber - differenceI);
-            arabNumber = differenceI;
-            finalResult = stringM + stringCM + stringD + stringCD + stringC + stringXC + stringL + stringXL + stringX + stringIX + stringV + stringIV + stringI;
+            int[] numbersForDivision = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+            int difference, quotient;
+            string partialResult, finalResult="";
+            for (int i=0; i < numbersForDivision.Length && arabNumber > 0; i++)
+            {
+                difference = arabNumber % numbersForDivision[i];
+                if (difference == 0) //For arabNumber=30
+                {
+                    quotient = arabNumber / numbersForDivision[i];
+                    partialResult = ConvertToRomanNumerals(arabNumber / quotient);
+                    for (int j = 0; j < quotient; j++)
+                    {
+                        finalResult += partialResult;
+                        arabNumber -= numbersForDivision[i];
+                    }
+                }
+                else
+                {
+                    partialResult = ConvertToRomanNumerals(arabNumber - difference);
+                    arabNumber = difference;
+                    finalResult += partialResult;
+                }
+            }
+           
             return finalResult;
         }
 
