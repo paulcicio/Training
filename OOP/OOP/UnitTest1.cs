@@ -40,27 +40,51 @@ namespace OOP
             {
                 Array.Resize(ref data, 2 * data.Length);
             }
-                for (int i= data.Length - 2; i>=position; i--)
-                {
-                    data[i+1] = data[i];
-                }
-                data[position] = obj;
-            
+            for (int i = data.Length - 2; i >= position; i--)
+            {
+                data[i + 1] = data[i];
+            }
+            data[position] = obj;
+
         }
         public void Remove(object obj)
-        {          
-                       
-            for (int i = 0; i < data.Length; i++)
+        {
+            bool found = false;
+            for (int i = 0; i < data.Length-1; i++)
             {
-                if (data[i] == obj)
-                
-                    data[i] = null;                    
+                if (data[i].Equals(obj))
+                {                    
+                    found = true;
+                }
+                if (found == true)
+                {
+                    data[i] = data[i + 1];                    
+                }
                 
             }
-            count--;
-            Array.Resize(ref data, data.Length - 1);
+            data[count - 1] = null;
+            count--;           
         }
-        public void Remove(int index) { }
+
+        public void Remove(int index)
+        {
+            bool found = false;
+            for (int i = 0; i < data.Length - 1; i++)
+            {
+                if (i== index)
+                {
+                    found = true;
+                }
+                if (found == true)
+                {
+                    data[i] = data[i + 1];
+                }
+
+            }
+            data[count - 1] = null;
+            count--;
+        }
+
         public int Count()
         {
             return count;
@@ -131,20 +155,31 @@ namespace OOP
         {
             object[] localData = new object[] { 3, 7, 5, 8 };
             Vector vector = new Vector(localData);
-            object obj = 2 ;
+            object obj = 2;
             object[] expectedValue = new object[] { 3, 7, 2, 5, 8, null, null, null };
             vector.Insert(2, obj);
-            CollectionAssert.AreEqual(expectedValue, vector.GetData());            
+            CollectionAssert.AreEqual(expectedValue, vector.GetData());
         }
 
         [TestMethod]
         public void RemoveObject()
         {
-            object[] localData = new object[] { 3, 7, 2, 5, 8 };
+            object[] localData = new object[] { 3, 7, 2, 5, 8};
             Vector vector = new Vector(localData);
             object obj = 2;
-            object[] expectedValue = new object[] { 3, 7, 5, 8, null, null, null };
+            object[] expectedValue = new object[] { 3, 7, 5, 8, null};
             vector.Remove(obj);
+            CollectionAssert.AreEqual(expectedValue, vector.GetData());
+        }
+
+        [TestMethod]
+        public void RemoveObjectByIndex()
+        {
+            object[] localData = new object[] { 3, 7, 2, 5, 8 };
+            Vector vector = new Vector(localData);
+            int index = 1;
+            object[] expectedValue = new object[] { 3, 2, 5, 8, null };
+            vector.Remove(index);
             CollectionAssert.AreEqual(expectedValue, vector.GetData());
         }
     }
