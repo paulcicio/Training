@@ -7,13 +7,9 @@ namespace OOP
     [TestClass]
     public class Vector : IEnumerable
     {
-        //Class variables               
-
         private object[] data;
         private int count;
-
-        //Class constructors
-
+        
         public Vector()
         {
             this.count = 0;
@@ -25,31 +21,28 @@ namespace OOP
             count = data.Length;
             this.data = new object[count];
             Array.Copy(data, this.data, count);
-            //this.data = data;
-
+        
         }
-
-        //Class Methods
-
-
-
+                
         public void Add(object obj)
         {
-            count++;
-            if (count >= data.Length)
-            {
-                Array.Resize(ref data, 2 * data.Length);
-            }
+            ResizeAndIncrementCounter();
             data[count - 1] = obj;
 
         }
-        public void Insert(int position, object obj)
+
+        private void ResizeAndIncrementCounter()
         {
             count++;
             if (count >= data.Length)
             {
                 Array.Resize(ref data, 2 * data.Length);
             }
+        }
+
+        public void Insert(int position, object obj)
+        {
+            ResizeAndIncrementCounter();
             for (int i = data.Length - 2; i >= position; i--)
             {
                 data[i + 1] = data[i];
@@ -59,23 +52,11 @@ namespace OOP
         }
         public void Remove(object obj)
         {
-            bool found = false;
-            for (int i = 0; i < data.Length - 1; i++)
-            {
-                if (data[i].Equals(obj))
-                {
-                    found = true;
-                }
-                if (found)
-                {
-                    data[i] = data[i + 1];
-                }
-            }
-            data[count - 1] = null;
-            count--;
+            int position = GetIndexOfElement(obj);
+            RemoveByIndex(position);           
         }
 
-        public void Remove(int index)
+        public void RemoveByIndex(int index)
         {
             bool found = false;
             for (int i = index; i < data.Length - 1; i++)
@@ -95,10 +76,19 @@ namespace OOP
 
         public object GetElementAtIndex(int index)
         {
-            for (int i = 0; i < data.Length - 1; i++)
+            for (int i = 0; i < data.Length; i++)
                 if (i == index)
                     return data[i];
             return null;
+        }
+
+        public int GetIndexOfElement(object obj)
+        {
+            for (int i = 0; i < data.Length - 1; i++)            
+                if (data[i].Equals(obj))                
+                    return i;
+            return -1;
+                            
         }
 
         public int Count()
@@ -180,7 +170,7 @@ namespace OOP
             Vector vector = new Vector(localData);
             int index = 1;
             object[] expectedValue = new object[] { 3, 2, 5, 8, null };
-            vector.Remove(index);
+            vector.RemoveByIndex(index);
             CollectionAssert.AreEqual(expectedValue, vector.GetData());
         }
 
