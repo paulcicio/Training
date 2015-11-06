@@ -125,8 +125,8 @@ namespace OOP
             object objCurrent = enumerator.Current;
             enumerator.MoveNext();
             enumerator.MoveNext();
-           Assert.AreEqual(true,  enumerator.MoveNext());
-            
+            Assert.AreEqual(true, enumerator.MoveNext());
+
             object newObj = enumerator.Current;
             Assert.AreEqual(3, objCurrent);
         }
