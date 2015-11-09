@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace OOP
 {
-    class Enumerator : IEnumerator
+    class Enumerator<T> : IEnumerator
     {
-        private Vector vector;
+        private Vector<T> vector;
         private int position = -1;
-        public Enumerator(Vector vector)
+        public Enumerator(Vector<T> vector)
         {
             this.vector = vector;
         }       

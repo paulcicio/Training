@@ -51,6 +51,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Enumerator.cs" />
+    <Compile Include="Icomparable.cs" />
+    <Compile Include="Sorted Class.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
