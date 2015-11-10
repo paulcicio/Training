@@ -20,7 +20,7 @@ namespace OOP
             this.data = new T[count];
             Sort(data);
             Array.Copy(data, this.data, count);
-            
+
         }
 
         public override void Add(T obj)
@@ -33,8 +33,7 @@ namespace OOP
                     break;
                 }
             }
-           // Insert(0, obj);
-        }       
+        }
 
         private void Sort(T[] data)
         {
@@ -69,7 +68,7 @@ namespace OOP
                 }
             }
             return 0;
-        }       
+        }
     }
 }
 
