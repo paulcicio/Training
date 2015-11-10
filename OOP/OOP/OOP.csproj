@@ -53,8 +53,9 @@
     <Compile Include="Enumerator.cs" />
     <Compile Include="Icomparable.cs" />
     <Compile Include="Sorted Class.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="VectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Vector.cs" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
