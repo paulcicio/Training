@@ -93,46 +93,31 @@ namespace OOP
             {
                 throw new NotImplementedException();
             }
-        }
-
-        //public T TraverseList()
-        //{
-        //    Node currentNode = begin;
-        //    while (currentNode.next != null)
-        //    {
-        //        currentNode = currentNode.next;
-        //    }
-        //    return currentNode.value;
-        //}
-
-        //public void Add(T value)
-        //{
-        //    Node toAdd = new Node();
-        //    toAdd.value = value;
-        //    Node current = begin;
-        //    if (begin == null)
-        //    {
-        //        begin = toAdd;
-        //    }
-        //    else
-        //    {
-        //        while (current.next != null)
-        //        {
-        //            current = current.next;
-        //        }
-        //        current.next = toAdd;
-        //        count++;
-        //    }
-        //}
+        }       
 
         public IEnumerator<T> GetEnumerator()
         {
             return new EnumeratorList(this);
         }
 
-        void ICollection<T>.Add(T item)
+         public void Add(T item)
         {
-            throw new NotImplementedException();
+            Node<T> toAdd = new Node<T>();
+            toAdd.value = item;
+            Node<T> current = begin;
+            if (begin == null)
+            {
+                begin = toAdd;
+            }
+            else
+            {
+                while (current.next != null)
+                {
+                    current = current.next;
+                }
+                current.next = toAdd;
+                count++;
+            }            
         }
 
         void ICollection<T>.Clear()
