@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
+using Should;
 
 namespace OOP
 {
@@ -8,11 +9,11 @@ namespace OOP
     public class LinkedListTests
     {
         [TestMethod]
-        public void Traverse()
+        public void ShouldBeEmptyList()
         {            
             SimpleLinkedList<int> list = new SimpleLinkedList<int>();
-            list.Insert(3);
-            list.TraverseList();
+            list.ShouldBeEmpty();
+            
         }
     }
 }
