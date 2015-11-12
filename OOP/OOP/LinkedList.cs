@@ -17,12 +17,31 @@ namespace OOP
         {
             public T value;
             public Node<T> next;
+
+            public override bool Equals(object obj)
+            {
+                if (obj is T)
+                {
+                    var equals = value?.Equals(obj);
+                    return equals.HasValue && equals.Value;
+                }
+                else
+                {
+                    if (obj is Node<T>)
+                    {
+                        var equals = next?.Equals(obj);
+                        return equals.Value && equals.HasValue;
+                    }
+                    return base.Equals(obj);
+                }
+            }
         }
 
         public class EnumeratorList : IEnumerator<T>
         {
             private SimpleLinkedList<T> linkedList;
             Node<T> currentNode;
+            private bool isAtStart;
             public EnumeratorList(SimpleLinkedList<T> linkedList)
             {
                 this.linkedList = linkedList;
@@ -31,18 +50,22 @@ namespace OOP
 
             public void Reset()
             {
-                currentNode = linkedList.begin;
+                currentNode = null;
+                isAtStart = true;
             }
 
             public bool MoveNext()
             {
-                if (currentNode == null)
-                    return false;
+                if (isAtStart)
+                {
+                    currentNode = linkedList.begin;
+                    isAtStart = false;
+                }
                 else
                 {
                     currentNode = currentNode?.next;
                 }
-                return true;
+                return currentNode != null;
             }
 
             public void Dispose()
@@ -66,7 +89,7 @@ namespace OOP
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return currentNode.value;
                 }
             }
         }
@@ -93,14 +116,14 @@ namespace OOP
             {
                 throw new NotImplementedException();
             }
-        }       
+        }
 
         public IEnumerator<T> GetEnumerator()
         {
             return new EnumeratorList(this);
         }
 
-         public void Add(T item)
+        public void Add(T item)
         {
             Node<T> toAdd = new Node<T>();
             toAdd.value = item;
@@ -108,6 +131,7 @@ namespace OOP
             if (begin == null)
             {
                 begin = toAdd;
+                count++;
             }
             else
             {
@@ -117,17 +141,24 @@ namespace OOP
                 }
                 current.next = toAdd;
                 count++;
-            }            
+            }
         }
 
-        void ICollection<T>.Clear()
+        public void Clear()
         {
-            throw new NotImplementedException();
+            begin = null;
+            count = 0;
         }
 
-        bool ICollection<T>.Contains(T item)
+        public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            Node<T> temp = begin;
+            bool contains = false;
+            while (!(contains = temp.value.Equals(item)) && temp.next != null)
+            {
+                temp = temp.next;
+            }
+            return contains;
         }
 
         void ICollection<T>.CopyTo(T[] array, int arrayIndex)
@@ -135,9 +166,20 @@ namespace OOP
             throw new NotImplementedException();
         }
 
-        bool ICollection<T>.Remove(T item)
+        public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            for (var current = begin; current.next != null; current = current.next)
+            {
+                var next = current.next;
+                if (current.Equals(item) && next != null)
+                {
+                    current = next;
+                    begin = current;
+                    count--;
+                    return true;
+                }
+            }
+            return false;
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
