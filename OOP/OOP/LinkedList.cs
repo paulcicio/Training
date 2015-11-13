@@ -146,14 +146,11 @@ namespace OOP
 
         public void Insert(int index, T item)
         {
-            if (index < 0)
+            if (index < 0 || index > count)
                 throw new ArgumentOutOfRangeException();
-            if (index > count)
-                index = count;
             Node toAdd = new Node();
             toAdd.value = item;
-            Node current = new Node();
-            current = begin;
+            Node current = begin;
             if (count == 0 || index == 0)
             {
                 begin = toAdd;
@@ -189,15 +186,14 @@ namespace OOP
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            Node current = new Node();
-            current = begin;
-            T[] tempArray = new T[4];
-            for (int i = 0; i < count; i++)
-            {                
-                tempArray[i] = current.value;
-                current = current.next;
-            }
-            Array.Copy(tempArray, array, count);
+            if (arrayIndex < 0 || arrayIndex > count)
+                throw new ArgumentOutOfRangeException();
+            if (array.Length==0)
+                throw new ArgumentNullException();
+            if (count > (array.Length - arrayIndex))
+                throw new ArgumentException();
+            for (Node current = begin; current != null; current = current.next)            
+                array[arrayIndex++] = current.value;                        
         }
 
         public bool Remove(T item)

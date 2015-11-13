@@ -95,11 +95,47 @@ namespace OOP
         public void CopyTo()
         {
             SimpleLinkedList<int> list = new SimpleLinkedList<int>();
-            int[] array = new int[4];
+            int[] array = new int[3];
             list.Add(3);
             list.Add(5);
             list.Add(7);
-            list.CopyTo(array, 1);            
+            list.CopyTo(array, 0);            
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void CopyToWithNegativeIndex()
+        {
+            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
+            int[] array = new int[3];
+            list.Add(3);
+            list.Add(5);
+            list.Add(7);
+            list.CopyTo(array, -2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CopyToWithNullArray()
+        {
+            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
+            int[] array = new int[0];
+            list.Add(3);
+            list.Add(5);
+            list.Add(7);
+            list.CopyTo(array, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CopyToWithLessSpaceInTheArray()
+        {
+            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
+            int[] array = new int[3];
+            list.Add(3);
+            list.Add(5);
+            list.Add(7);
+            list.CopyTo(array, 2);
         }
     }
 }
