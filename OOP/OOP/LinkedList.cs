@@ -10,13 +10,13 @@ namespace OOP
 {
     public class SimpleLinkedList<T> : ICollection<T>
     {
-        Node<T> begin;
+        Node begin;
         private int count;
 
-        private class Node<T>
+        private class Node
         {
             public T value;
-            public Node<T> next;
+            public Node next;
 
             public override bool Equals(object obj)
             {
@@ -27,12 +27,12 @@ namespace OOP
                 }
                 else
                 {
-                    if (obj is Node<T>)
+                    if (obj is Node)
                     {
                         var equals = next?.Equals(obj);
                         return equals.Value && equals.HasValue;
                     }
-                    return base.Equals(obj);
+                    return false;
                 }
             }
         }
@@ -40,7 +40,7 @@ namespace OOP
         public class EnumeratorList : IEnumerator<T>
         {
             private SimpleLinkedList<T> linkedList;
-            Node<T> currentNode;
+            Node currentNode;
             private bool isAtStart;
             public EnumeratorList(SimpleLinkedList<T> linkedList)
             {
@@ -70,7 +70,7 @@ namespace OOP
 
             public void Dispose()
             {
-                //throw new NotImplementedException();
+
             }
 
             public object Current
@@ -125,9 +125,9 @@ namespace OOP
 
         public void Add(T item)
         {
-            Node<T> toAdd = new Node<T>();
+            Node toAdd = new Node();
             toAdd.value = item;
-            Node<T> current = begin;
+            Node current = begin;
             if (begin == null)
             {
                 begin = toAdd;
@@ -144,6 +144,32 @@ namespace OOP
             }
         }
 
+        public void Insert(int index, T item)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException();
+            if (index > count)
+                index = count;
+            Node toAdd = new Node();
+            toAdd.value = item;
+            Node current = new Node();
+            current = begin;
+            if (count == 0 || index == 0)
+            {
+                begin = toAdd;
+            }
+            else
+            {
+                for (int i = 0; i < index - 1; i++)
+                {
+                    current = current.next;
+                }
+                toAdd.next = current.next;
+                current.next = toAdd;
+            }
+            count++;
+        }
+
         public void Clear()
         {
             begin = null;
@@ -152,7 +178,7 @@ namespace OOP
 
         public bool Contains(T item)
         {
-            Node<T> temp = begin;
+            Node temp = begin;
             bool contains = false;
             while (!(contains = temp.value.Equals(item)) && temp.next != null)
             {
@@ -161,9 +187,17 @@ namespace OOP
             return contains;
         }
 
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            Node current = new Node();
+            current = begin;
+            T[] tempArray = new T[4];
+            for (int i = 0; i < count; i++)
+            {                
+                tempArray[i] = current.value;
+                current = current.next;
+            }
+            Array.Copy(tempArray, array, count);
         }
 
         public bool Remove(T item)
