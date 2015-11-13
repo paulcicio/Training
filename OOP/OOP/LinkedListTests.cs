@@ -10,15 +10,15 @@ namespace OOP
     {
         [TestMethod]
         public void ShouldBeEmptyList()
-        {            
+        {
             SimpleLinkedList<int> list = new SimpleLinkedList<int>();
-            list.ShouldBeEmpty();            
+            list.ShouldBeEmpty();
         }
 
         [TestMethod]
         public void ShouldSupportAddition()
         {
-            SimpleLinkedList<int> list = new SimpleLinkedList<int>();            
+            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
             list.Add(3);
             list.ShouldContain(3);
         }
@@ -26,9 +26,9 @@ namespace OOP
         [TestMethod]
         public void ShouldRemoveAnItem()
         {
-            SimpleLinkedList<int> list = new SimpleLinkedList<int>();            
-            list.Add(3);            
-            list.Add(5);            
+            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
+            list.Add(3);
+            list.Add(5);
             list.Add(7);
             list.Remove(3);
             list.ShouldNotContain(3);
@@ -37,9 +37,9 @@ namespace OOP
         [TestMethod]
         public void ShouldNotRemoveNonExistentItems()
         {
-            SimpleLinkedList<int> list = new SimpleLinkedList<int>();            
-            list.Add(3);            
-            list.Add(5);            
+            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
+            list.Add(3);
+            list.Add(5);
             list.Add(7);
             var oldCount = list.Count;
             list.Remove(8);
@@ -49,9 +49,9 @@ namespace OOP
         [TestMethod]
         public void ClearList()
         {
-            SimpleLinkedList<int> list = new SimpleLinkedList<int>();            
-            list.Add(3);            
-            list.Add(5);            
+            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
+            list.Add(3);
+            list.Add(5);
             list.Add(7);
             list.Clear();
             list.ShouldBeEmpty();
@@ -60,9 +60,9 @@ namespace OOP
         [TestMethod]
         public void Contains()
         {
-            SimpleLinkedList<int> list = new SimpleLinkedList<int>();            
-            list.Add(3);            
-            list.Add(5);            
+            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
+            list.Add(3);
+            list.Add(5);
             list.Add(7);
             bool isTrue = list.Contains(7);
             Assert.AreEqual(true, isTrue);
@@ -80,10 +80,10 @@ namespace OOP
             list.ShouldContain(4);
         }
 
-        [TestMethod]        
+        [TestMethod]
         public void InsertAtIndex()
         {
-            SimpleLinkedList<int> list = new SimpleLinkedList<int>();            
+            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
             list.Add(3);
             list.Add(5);
             list.Add(7);
@@ -99,7 +99,7 @@ namespace OOP
             list.Add(3);
             list.Add(5);
             list.Add(7);
-            list.CopyTo(array, 0);            
+            list.CopyTo(array, 0);
         }
 
         [TestMethod]
