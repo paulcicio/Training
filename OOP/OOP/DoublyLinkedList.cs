@@ -10,7 +10,7 @@ namespace OOP
 {
     public class DoublyLinkedList<T> : ICollection<T>
     {
-        Node begin;
+        Node guardsman;
         private int count;
 
         public class Node
@@ -37,19 +37,45 @@ namespace OOP
                 set { previous = value; }
             }
         }
-        public IEnumerator GetEnumerator()
-        {
-            return GetEnumerator();
-        }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return new EnumeratorDoubleList(this);
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public void Add(T item)
         {
-            throw new NotImplementedException();
+            Node toAdd = new Node();
+            toAdd.TValue = item;
+            Node current = guardsman;
+            if (guardsman == null)
+            {
+                guardsman = toAdd;
+                count++;
+            }
+            else
+            {
+                current = guardsman;
+                guardsman = new Node();
+                current.Previous = current;
+                guardsman.Next = current;
+            }
+
+            //if (guardsman == null)
+            //{
+            //    guardsman = toAdd;
+            //    count++;
+            //}
+            //else
+            //{
+            //    AddLast
+            //}
+
         }
 
         public void Clear()
@@ -109,14 +135,14 @@ namespace OOP
             {
                 if (isAtStart)
                 {
-                    currentNode = list.begin;
+                    currentNode = list.guardsman;
                     isAtStart = false;
                 }
                 else
                 {
                     currentNode = currentNode?.Next;
                 }
-                return currentNode.Previous != null;
+                return currentNode != list.guardsman;
             }
 
             public void Dispose()

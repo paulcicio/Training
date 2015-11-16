@@ -21,6 +21,8 @@ namespace OOP
             SimpleLinkedList<int> list = new SimpleLinkedList<int>();
             list.Add(3);
             list.ShouldContain(3);
+            list.Add(5);
+            list.ShouldContain(5);
         }
 
         [TestMethod]

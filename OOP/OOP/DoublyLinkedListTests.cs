@@ -10,8 +10,18 @@ namespace OOP
         [TestMethod]
         public void EmptyList()
         {
-            SimpleLinkedList<int> list = new SimpleLinkedList<int>();
+            DoublyLinkedList<int> list = new DoublyLinkedList<int>();
             list.ShouldBeEmpty();
+        }
+
+        [TestMethod]
+        public void AddFirst()
+        {
+            DoublyLinkedList<int> list = new DoublyLinkedList<int>();
+            list.Add(3);
+            list.ShouldContain(3);
+            list.Add(5);
+            list.ShouldContain(5);
         }
     }
 }
