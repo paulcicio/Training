@@ -22,6 +22,8 @@ namespace OOP
             list.ShouldContain(3);
             list.Add(5);
             list.ShouldContain(5);
+            list.Add(7);
+            list.ShouldContain(7);
         }
     }
 }

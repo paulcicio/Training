@@ -10,8 +10,9 @@ namespace OOP
 {
     public class DoublyLinkedList<T> : ICollection<T>
     {
-        Node guardsman;
-        private int count;
+        Node head;
+        Node tail;  
+        private int count = 0;
 
         public class Node
         {
@@ -52,29 +53,25 @@ namespace OOP
         {
             Node toAdd = new Node();
             toAdd.TValue = item;
-            Node current = guardsman;
-            if (guardsman == null)
+            Node current = head;
+            if (head == null)
             {
-                guardsman = toAdd;
+                head = toAdd;
                 count++;
             }
             else
             {
-                current = guardsman;
-                guardsman = new Node();
-                current.Previous = current;
-                guardsman.Next = current;
+                Node previous = null;
+                while (current.Next != null)
+                {
+                    previous = current;
+                    current = current.Next;
+                    toAdd.Previous = current;
+                }
+                current.Next = toAdd;
+                current.Previous = previous;
+                count++;
             }
-
-            //if (guardsman == null)
-            //{
-            //    guardsman = toAdd;
-            //    count++;
-            //}
-            //else
-            //{
-            //    AddLast
-            //}
 
         }
 
@@ -135,14 +132,15 @@ namespace OOP
             {
                 if (isAtStart)
                 {
-                    currentNode = list.guardsman;
-                    isAtStart = false;
+                    currentNode = list.head;                    
+                    isAtStart = false;                    
                 }
                 else
                 {
+                    list.head = currentNode;
                     currentNode = currentNode?.Next;
                 }
-                return currentNode != list.guardsman;
+                return currentNode != null;
             }
 
             public void Dispose()
