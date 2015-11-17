@@ -49,29 +49,22 @@ namespace OOP
             return GetEnumerator();
         }
 
-        public void Add(T item)
+        public void Add(T item) //Insert at the beginning of the list
         {
             Node toAdd = new Node();
             toAdd.TValue = item;
             Node current = head;
-            if (head == null)
+            if (head == null) //Empty list
             {
-                head = toAdd;
-                count++;
+                head = tail = toAdd;               
             }
             else
             {
-                Node previous = null;
-                while (current.Next != null)
-                {
-                    previous = current;
-                    current = current.Next;
-                    toAdd.Previous = current;
-                }
-                current.Next = toAdd;
-                current.Previous = previous;
-                count++;
+                toAdd.Next = current;
+                toAdd.Previous = null;
+                head = toAdd;                            
             }
+            count++;
         }
 
         public void AddAtTail(T item)
@@ -79,7 +72,7 @@ namespace OOP
             Node toAdd = new Node();
             toAdd.TValue = item;
             Node current = tail;
-            if (head == null)
+            if (head == null) //Empty list
             {
                 head = tail = toAdd;
             }
@@ -142,6 +135,12 @@ namespace OOP
             {
                 throw new NotImplementedException();
             }
+        }
+
+        internal IEnumerable<T> GetReverseEnumerable()
+        {
+            for (Node current = tail; current != null; current = current.Previous)
+                yield return current.TValue;
         }
 
         public class EnumeratorDoubleList : IEnumerator<T>
