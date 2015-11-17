@@ -40,6 +40,14 @@ namespace OOP
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void RemoveForEmptyList()
+        {
+            DoublyLinkedList<int> list = new DoublyLinkedList<int>();            
+            list.Remove(7);            
+        }
+
+        [TestMethod]
         public void RemoveForASingleItemList()
         {
             DoublyLinkedList<int> list = new DoublyLinkedList<int>();            

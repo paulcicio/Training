@@ -118,8 +118,21 @@ namespace OOP
 
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
-        }
+            Node toAdd = new Node();
+            toAdd.TValue = item;
+            Node current = head;
+            if (head == null) //Empty list
+            {
+                throw new InvalidOperationException();
+            }
+            else
+            {                             
+                head = tail = null;
+                count--;
+                return true;                
+            }            
+            return false;
+        }    
 
         public int Count
         {
