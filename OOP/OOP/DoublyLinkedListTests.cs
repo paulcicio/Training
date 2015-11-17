@@ -57,6 +57,17 @@ namespace OOP
         }
 
         [TestMethod]
+        public void RemoveForAListWithTwoItems()
+        {
+            DoublyLinkedList<int> list = new DoublyLinkedList<int>();
+            list.Add(7);
+            list.Add(5);
+            list.Remove(7);
+            list.ShouldNotContain(7);
+            list.ShouldContain(5);
+        }
+
+        [TestMethod]
         public void Clear()
         {
             DoublyLinkedList<int> list = new DoublyLinkedList<int>();

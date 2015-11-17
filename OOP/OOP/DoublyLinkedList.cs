@@ -127,7 +127,7 @@ namespace OOP
             }
             else
             {                             
-                head = tail = null;
+                head = tail = null; //Removes the first element in a single item list 
                 count--;
                 return true;                
             }            
