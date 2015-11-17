@@ -11,7 +11,7 @@ namespace OOP
     public class DoublyLinkedList<T> : ICollection<T>
     {
         Node head;
-        Node tail;  
+        Node tail;
         private int count = 0;
 
         public class Node
@@ -23,7 +23,7 @@ namespace OOP
             public T TValue
             {
                 get { return tValue; }
-                set{tValue = value;}
+                set { tValue = value; }
             }
 
             public Node Next
@@ -72,22 +72,55 @@ namespace OOP
                 current.Previous = previous;
                 count++;
             }
+        }
 
+        public void AddAtTail(T item)
+        {
+            Node toAdd = new Node();
+            toAdd.TValue = item;
+            Node current = tail;
+            if (head == null)
+            {
+                head = tail = toAdd;
+            }
+            else
+            {
+                toAdd.Next = null;
+                current.Next = toAdd;
+                toAdd.Previous = current;
+                tail = toAdd;
+            }
+            count++;
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            head = null;
+            tail = null;
+            count = 0;
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            Node currentNode = head;
+            bool contains = false;
+            while (!(contains = currentNode.TValue.Equals(item)) && currentNode.Next != null)
+            {
+                currentNode = currentNode.Next;
+            }
+            return contains;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (arrayIndex < 0 || arrayIndex > count)
+                throw new ArgumentOutOfRangeException();
+            if (array.Length == 0)
+                throw new ArgumentNullException();
+            if (count > (array.Length - arrayIndex))
+                throw new ArgumentException();
+            for (Node current = head; current != null; current = current.Next)
+                array[arrayIndex++] = current.TValue;
         }
 
         public bool Remove(T item)
@@ -99,7 +132,7 @@ namespace OOP
         {
             get
             {
-                throw new NotImplementedException();
+                return count;
             }
         }
 
@@ -132,8 +165,8 @@ namespace OOP
             {
                 if (isAtStart)
                 {
-                    currentNode = list.head;                    
-                    isAtStart = false;                    
+                    currentNode = list.head;
+                    isAtStart = false;
                 }
                 else
                 {
