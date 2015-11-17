@@ -15,7 +15,7 @@ namespace OOP
         }
 
         [TestMethod]
-        public void Add()
+        public void AddAtHead()
         {
             DoublyLinkedList<int> list = new DoublyLinkedList<int>();
             int[] array = new int[3];
@@ -37,6 +37,15 @@ namespace OOP
             list.AddAtTail(3);            
             list.AddAtTail(5);
             list.CopyTo(array, 0);
+        }
+
+        [TestMethod]
+        public void RemoveForASingleItemList()
+        {
+            DoublyLinkedList<int> list = new DoublyLinkedList<int>();            
+            list.AddAtTail(7);
+            list.Remove(7);
+            list.ShouldBeEmpty();
         }
 
         [TestMethod]
