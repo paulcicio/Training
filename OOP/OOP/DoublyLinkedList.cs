@@ -37,24 +37,6 @@ namespace OOP
                 get { return previous; }
                 set { previous = value; }
             }
-
-            public override bool Equals(object obj)
-            {
-                if (obj is T)
-                {
-                    var equals = tValue?.Equals(obj);
-                    return equals.HasValue && equals.Value;
-                }
-                else
-                {
-                    if (obj is Node)
-                    {
-                        var equals = next?.Equals(obj);
-                        return equals.Value && equals.HasValue;
-                    }
-                    return false;
-                }
-            }
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -64,7 +46,8 @@ namespace OOP
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            for (Node current = head; current != null; current = current.Next)
+                yield return current.TValue;            
         }
 
         public void Add(T item) //Insert at the beginning of the list
@@ -123,20 +106,24 @@ namespace OOP
             return contains;
         }
 
-        public int FindPosition(T item)
+        public Node FindItem(T item)
         {
-            Node currentNode = head;
-            bool contains = false;
-            int index = 0;
-            while (!(contains = currentNode.TValue.Equals(item)) && currentNode.Next != null)
+            for (Node current = head; current != null; current = current.Next)
             {
-                currentNode = currentNode.Next;
-                index++;
+                if (current.TValue.Equals(item))
+                    return current;
             }
-            return index;
+            return null;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
+        {
+            ValidateCopyToParameters(array, arrayIndex);
+            for (Node current = head; current != null; current = current.Next)
+                array[arrayIndex++] = current.TValue;
+        }
+
+        private void ValidateCopyToParameters(T[] array, int arrayIndex)
         {
             if (arrayIndex < 0 || arrayIndex > count)
                 throw new ArgumentOutOfRangeException();
@@ -144,48 +131,33 @@ namespace OOP
                 throw new ArgumentNullException();
             if (count > (array.Length - arrayIndex))
                 throw new ArgumentException();
-            for (Node current = head; current != null; current = current.Next)
-                array[arrayIndex++] = current.TValue;
         }
 
         public bool Remove(T item) //Deletes the first element of the list
         {
-            Node current = head;
 
             if (head == null) //Empty list
             {
                 throw new InvalidOperationException();
             }
-            else
+
+            if (count == 1)
             {
-                if (count == 1)
-                {
-                    head = tail = null; //Removes the first element in a single item list 
-                    count--;
-                    return true;
-                }
-                else //The list contains multiple elements
-                {
-                    bool found = Contains(item);
-                    if (found)
-                    {
-                        int index = FindPosition(item);
-                        for (int i = 0; i < index; i++)
-                        {
-                            current = current.Next;
-                        }
-                        current.Previous.Next = current.Next;
-                        current.Next.Previous = current.Previous;
-                        count--;
-                        for (int i = index; i <= count; i++)
-                        {
-                            current = current.Next;
-                        }
-                        return true;
-                    }
-                }
+                head = tail = null; //Removes the first element in a single item list 
+                count--;
+                return true;
             }
-            return false;
+            //The list contains multiple elements                
+            Node current = FindItem(item);
+            if (current != null)
+            {
+                if (current.Previous != null)
+                    current.Previous.Next = current.Next;
+                if (current.Next != null)
+                    current.Next.Previous = current.Previous;
+            }
+            count--;
+            return true;
         }
 
         public int Count
@@ -236,7 +208,6 @@ namespace OOP
                 }
                 else
                 {
-                    list.head = currentNode;
                     currentNode = currentNode?.Next;
                 }
                 return currentNode != null;

@@ -102,8 +102,7 @@ namespace OOP
             list.Add(3);
             list.Add(5);
             list.Add(7);
-            int index = list.FindPosition(7);
-            Assert.AreEqual(0, index);
+            var current = list.FindItem(7);            
         }
 
         [TestMethod]
