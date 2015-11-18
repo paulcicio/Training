@@ -97,23 +97,22 @@ namespace OOP
 
         public bool Contains(T item)
         {
-            Node currentNode = head;
-            bool contains = false;
-            while (!(contains = currentNode.TValue.Equals(item)) && currentNode.Next != null)
-            {
-                currentNode = currentNode.Next;
-            }
-            return contains;
+            Node currentNode;        
+            return FindItem(item, out currentNode);
         }
 
-        public Node FindItem(T item)
+        private bool FindItem(T item, out Node currentNode)
         {
             for (Node current = head; current != null; current = current.Next)
             {
                 if (current.TValue.Equals(item))
-                    return current;
+                {
+                    currentNode = current;
+                    return true;
+                }
             }
-            return null;
+            currentNode = null;
+            return false;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
@@ -147,14 +146,15 @@ namespace OOP
                 count--;
                 return true;
             }
-            //The list contains multiple elements                
-            Node current = FindItem(item);
-            if (current != null)
+            //The list contains multiple elements  
+            Node currentNode;              
+            bool found = FindItem(item, out currentNode);
+            if (currentNode != null)
             {
-                if (current.Previous != null)
-                    current.Previous.Next = current.Next;
-                if (current.Next != null)
-                    current.Next.Previous = current.Previous;
+                if (currentNode.Previous != null)
+                    currentNode.Previous.Next = currentNode.Next;
+                if (currentNode.Next != null)
+                    currentNode.Next.Previous = currentNode.Previous;
             }
             count--;
             return true;

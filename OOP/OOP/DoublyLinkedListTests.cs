@@ -102,7 +102,8 @@ namespace OOP
             list.Add(3);
             list.Add(5);
             list.Add(7);
-            var current = list.FindItem(7);            
+            list.Contains(7).ShouldBeTrue();
+            list.Contains(2).ShouldBeFalse();
         }
 
         [TestMethod]
