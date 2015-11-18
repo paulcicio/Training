@@ -60,11 +60,17 @@ namespace OOP
         public void RemoveForAListWithTwoItems()
         {
             DoublyLinkedList<int> list = new DoublyLinkedList<int>();
+            int[] array = new int[5];
             list.Add(7);
+            list.Add(6);
             list.Add(5);
-            list.Remove(7);
-            list.ShouldNotContain(7);
-            list.ShouldContain(5);
+            list.Add(4);
+            list.Add(3);
+            list.CopyTo(array, 0);
+            list.Remove(5);
+            list.CopyTo(array, 0);
+            list.ShouldNotContain(5);           
+            list.ShouldContain(3);
         }
 
         [TestMethod]
@@ -85,8 +91,19 @@ namespace OOP
             list.Add(3);
             list.Add(5);
             list.Add(7);
-            bool isTrue = list.Contains(7);
+            bool isTrue = list.Contains(3);
             Assert.AreEqual(true, isTrue);
+        }
+
+        [TestMethod]
+        public void Find()
+        {
+            DoublyLinkedList<int> list = new DoublyLinkedList<int>();
+            list.Add(3);
+            list.Add(5);
+            list.Add(7);
+            int index = list.FindPosition(7);
+            Assert.AreEqual(0, index);
         }
 
         [TestMethod]
