@@ -74,14 +74,14 @@ namespace OOP
             Node current = head;
             if (head == null) //Empty list
             {
-                head = tail = toAdd;               
+                head = tail = toAdd;
             }
             else
             {
                 toAdd.Next = current;
                 toAdd.Previous = null;
                 current.Previous = toAdd;
-                head = toAdd;                            
+                head = toAdd;
             }
             count++;
         }
@@ -151,7 +151,7 @@ namespace OOP
         public bool Remove(T item) //Deletes the first element of the list
         {
             Node current = head;
-            
+
             if (head == null) //Empty list
             {
                 throw new InvalidOperationException();
@@ -168,25 +168,25 @@ namespace OOP
                 {
                     bool found = Contains(item);
                     if (found)
-                        {
-                            int index = FindPosition(item);
+                    {
+                        int index = FindPosition(item);
                         for (int i = 0; i < index; i++)
                         {
                             current = current.Next;
-                        }     
-                            current.Previous.Next = current.Next;
-                            current.Next.Previous = current.Previous;
-                            count--;
-                        for (int i = index; i <= count;  i++)
+                        }
+                        current.Previous.Next = current.Next;
+                        current.Next.Previous = current.Previous;
+                        count--;
+                        for (int i = index; i <= count; i++)
                         {
                             current = current.Next;
-                        }                                                                          
-                            return true;
                         }
+                        return true;
                     }
-                }                        
+                }
+            }
             return false;
-        }    
+        }
 
         public int Count
         {
