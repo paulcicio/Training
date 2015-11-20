@@ -9,7 +9,7 @@ namespace OOP
         [TestMethod]
         public void Add()
         {
-            Dictionary dictio = new Dictionary();
+            Dictionary<string, Movie> dictio = new Dictionary<string, Movie>();
 
             Movie movie1 = new Movie();
             movie1.Title = "The Shawshank Redemption";
@@ -21,10 +21,10 @@ namespace OOP
             movie3.Title = "The Dark Knight";
             movie3.Year = 2008;
 
-            dictio.dictionary.Add(movie1.GetHashCode(), movie1);
-            dictio.dictionary.Add(movie2.GetHashCode(), movie2);
+            dictio.Add(movie1.GetHashCode(), movie1);
+            dictio.Add(movie2.GetHashCode(), movie2);
             //dictio.dictionary.Add(movie3.GetHashCode(), movie3);
-            dictio.dictionary.ContainsKey(movie3.GetHashCode());         
+            dictio.ContainsKey(movie3.Title);         
         }
     }
 }
