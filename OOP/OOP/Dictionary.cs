@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OOP;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,18 +8,19 @@ using System.Threading.Tasks;
 
 namespace OOP
 {
-    public class Dictionary<Key, value> : ICollection
+    public class Dictionary<TKey, TValue> 
     {
-        //private Bucket[] buckets = new Bucket[1000];
-        private Entry[] entries;
-        private int[] buckets; //every value in this array points to an index in the entries array
+        private Entry[] entries= new Entry[100];
+        private int[] buckets = new int[100]; 
         private int count;
+        private int nextEntry;
+        private int freeIndex;
 
         public int Count
         {
             get
             {
-                throw new NotImplementedException();
+                return count;
             }
         }
 
@@ -38,9 +40,43 @@ namespace OOP
             }
         }
 
-        public void Add(Key key, Movie movie)
+        public void Add(TKey key, TValue value)
         {
-                                 
+            int hashCode = key.GetHashCode() & 0x7FFFFFFF;
+            int targetBucket = hashCode % buckets.Length;
+            int index;
+            for (int i = buckets[targetBucket]; i >= 0; i = entries[i].next)
+            {
+                if (entries[i].hashCode == hashCode && Equals(entries[i].key, key))
+                {
+                    entries[i].value = value;
+                    return;
+                }
+                else
+                    if (entries[i].hashCode == hashCode && !Equals(entries[i].key, key))
+                {
+                    index = freeIndex;
+                    freeIndex = entries[index].next;
+                }
+            }
+
+            if (count == entries.Length)
+            {
+                Resize();
+                targetBucket = hashCode % buckets.Length;
+            }
+            index = count;
+            count++;
+            entries[index].hashCode = hashCode;
+            entries[index].next = buckets[targetBucket];
+            entries[index].key = key;
+            entries[index].value = value;
+            buckets[targetBucket] = index;
+        }
+
+        private void Resize()
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsSynchronized
@@ -51,7 +87,7 @@ namespace OOP
             }
         }
 
-        public int GenerateHashCode(Key key)
+        public int GenerateHashCode(TKey key)
         {
             var hashCode = key.GetHashCode() & 0x7FFFFFFF;
             int targetBucket = hashCode % buckets.Length;
@@ -62,27 +98,29 @@ namespace OOP
         {
             if (count > 0)
             {
-                for (int i = 0; i < buckets.Length; i++) buckets[i] = -1;                
+                for (int i = 0; i < buckets.Length; i++) buckets[i] = -1;
                 count = 0;
             }
         }
 
-        public bool Contains(value item)
+        public bool ContainsKey(TKey key)
+        {
+            int targetBucket = GenerateHashCode(key);
+            for (int i = buckets[targetBucket]; i >= 0; i = entries[i].next)
+            {
+                if (Equals(entries[i].key, key))
+                    return true;
+            }
+            return false;
+
+        }
+
+        public void CopyTo(TValue[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
-        public void CopyTo(value[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(value item)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
+        public bool Remove(TValue item)
         {
             throw new NotImplementedException();
         }
@@ -96,35 +134,9 @@ namespace OOP
         {
             public int hashCode;
             public int next;
-            public Key key;
-            public value value;
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            foreach (var bucket in buckets)
-                if (bucket != null)
-                    foreach (Entry entry in entries)
-                        yield return entry.value;
-        }
-        //private class Bucket : IEnumerable
-        //{
-        //    public List<Entry> data = new List<Entry>();
-        //    public void Add(Key key, value value)
-        //    {
-        //        data.Add(new Entry
-        //        {
-        //            key = key,
-        //            value = value
-        //        });
-
-        //    }
-
-            public IEnumerator GetEnumerator()
-            {
-                throw new NotImplementedException();
-            }
-        }
+            public TKey key;
+            public TValue value;
+        }        
     }
 
     public class Movie
@@ -132,4 +144,5 @@ namespace OOP
         public string Title;
         public int Year;
     }
+}
 

@@ -21,10 +21,10 @@ namespace OOP
             movie3.Title = "The Dark Knight";
             movie3.Year = 2008;
 
-            dictio.Add(movie1.GetHashCode(), movie1);
-            dictio.Add(movie2.GetHashCode(), movie2);
-            //dictio.dictionary.Add(movie3.GetHashCode(), movie3);
-            dictio.ContainsKey(movie3.Title);         
+            dictio.Add(movie1.Title, movie1);
+            dictio.Add(movie2.Title, movie2);
+            dictio.Add(movie3.Title, movie3);
+            dictio.ContainsKey(movie3.Title);
         }
     }
 }
