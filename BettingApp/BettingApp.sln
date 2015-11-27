@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BettingApp", "BettingApp\BettingApp.csproj", "{2F8858B7-3E60-411C-8FA6-92F3158D62DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookmaker", "Bookmaker\Bookmaker.csproj", "{7ACA0A26-8398-491C-A4D0-67773D067FB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BettingTests", "BettingTests\BettingTests.csproj", "{F3D0D847-02F5-4A5C-8AD4-EF39BFB9506F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F8858B7-3E60-411C-8FA6-92F3158D62DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F8858B7-3E60-411C-8FA6-92F3158D62DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F8858B7-3E60-411C-8FA6-92F3158D62DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F8858B7-3E60-411C-8FA6-92F3158D62DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ACA0A26-8398-491C-A4D0-67773D067FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ACA0A26-8398-491C-A4D0-67773D067FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ACA0A26-8398-491C-A4D0-67773D067FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ACA0A26-8398-491C-A4D0-67773D067FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3D0D847-02F5-4A5C-8AD4-EF39BFB9506F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D0D847-02F5-4A5C-8AD4-EF39BFB9506F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D0D847-02F5-4A5C-8AD4-EF39BFB9506F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D0D847-02F5-4A5C-8AD4-EF39BFB9506F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
