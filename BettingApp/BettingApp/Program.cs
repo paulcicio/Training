@@ -10,6 +10,7 @@ namespace BettingApp
     {
         static void Main(string[] args)
         {
+
         }
     }
 }

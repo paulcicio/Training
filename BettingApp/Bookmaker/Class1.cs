@@ -12,16 +12,41 @@ namespace Bookmaker
         private string password;
         private decimal balance;
         private Betting_History bettingHistory;
-        private Transaction_History depositHistory;
-        private Transaction_History withdrawHistory;
+        private TransactionHistory depositHistory;
+        private TransactionHistory withdrawHistory;
     }
     public class Event
     {
         private int code;
         private string match;
         private DateTime date;
+
+        public int Code
+        {
+            get { return code; }
+            set { code = value; }
+        }
+        public string Match
+        {
+            get { return match; }
+            set { match = value; }
+        }
+        public DateTime Date
+        {
+            get { return date; }
+            set { date = value; }
+        }
     }
-    public class Football_Match : Event
+    public class Events
+    {
+        private static List<Event> currentOffer = new List<Event>();
+        public static List<Event> CurrentOffer
+        {
+            get { return currentOffer; }
+            set { currentOffer = value; }
+        }
+    }
+    public class FootballMatch : Event
     {
         private bool betOnHosts;
         private bool betOnDraw;
@@ -29,14 +54,14 @@ namespace Bookmaker
         private decimal oddsForHosts;
         private decimal oddsForDraw;
         private decimal oddsForGuests;
-        private Special_Bets specialBet;
+        private SpecialBets specialBet;
     }
-    public class Special_Bets
+    public class SpecialBets
     {
         private bool firstHalf;
         private bool handicap;
         private bool bothTeamsToScore;
-        private bool TotalGoals;
+        private bool totalGoals;
         private bool halfTime_fullTime;
         private bool correctScore;
     }
@@ -56,7 +81,7 @@ namespace Bookmaker
         private decimal totalOdds;
         private decimal estimatedWin;
     }
-    public class Transaction_History
+    public class TransactionHistory
     {
         private DateTime date;
         private uint transactionID;
