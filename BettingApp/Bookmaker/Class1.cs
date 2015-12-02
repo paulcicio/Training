@@ -39,8 +39,8 @@ namespace Bookmaker
     }
     public class Events
     {
-        private static List<Event> currentOffer = new List<Event>();
-        public static List<Event> CurrentOffer
+        private List<Event> currentOffer = new List<Event>();
+        public List<Event> CurrentOffer
         {
             get { return currentOffer; }
             set { currentOffer = value; }
