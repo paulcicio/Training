@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Bookmaker;
+using System.Collections.Generic;
 
 namespace BettingTests
 {
@@ -125,6 +126,55 @@ namespace BettingTests
             events.CurrentOffer.Remove(match1);
             int count = events.CurrentOffer.Count;
             Assert.AreEqual(2, count);
+        }
+        [TestMethod]
+        public void CalculateTotalOdds()
+        {
+            DateTime date = new DateTime(2015, 12, 04, 21, 30, 00);
+            FootballMatch match1 = new FootballMatch();        
+            match1.Code = 677;
+            match1.Match = "Nice vs PSG";
+            match1.Date = date;
+            match1.MainBet = mainBet.awayWin;
+            match1.OddsForGuests = 1.5;
+            Ticket ticket = new Ticket();            
+            ticket.events.Add(match1);
+            DateTime date2 = new DateTime(2015, 12, 04, 21, 45, 00);
+            FootballMatch match2 = new FootballMatch();
+            match2.Code = 439;
+            match2.Match = "Lazio vs Juventus";
+            match2.Date = date2;
+            match2.MainBet = mainBet.Draw;
+            match2.OddsForDraw = 3.2;            
+            ticket.events.Add(match2);
+            double winnings = Math.Round( ticket.CalculateTotalOdds(), 1);
+            double expected = 4.8;
+            Assert.AreEqual(expected, winnings);
+        }
+        [TestMethod]
+        public void CalculatePotentialWinning()
+        {
+            DateTime date = new DateTime(2015, 12, 04, 21, 30, 00);
+            FootballMatch match1 = new FootballMatch();
+            match1.Code = 677;
+            match1.Match = "Nice vs PSG";
+            match1.Date = date;
+            match1.MainBet = mainBet.awayWin;
+            match1.OddsForGuests = 1.5;
+            Ticket ticket = new Ticket();
+            ticket.events.Add(match1);
+            DateTime date2 = new DateTime(2015, 12, 04, 21, 45, 00);
+            FootballMatch match2 = new FootballMatch();
+            match2.Code = 439;
+            match2.Match = "Lazio vs Juventus";
+            match2.Date = date2;
+            match2.MainBet = mainBet.Draw;
+            match2.OddsForDraw = 3.2;
+            ticket.events.Add(match2);
+            double winnings = Math.Round(ticket.CalculateTotalOdds(), 1);
+            ticket.Stake = 10;
+            double actual = Math.Round(ticket.CalculateWinnings(), 1);
+            Assert.AreEqual(48, actual);
         }
     }
 }

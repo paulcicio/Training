@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Bookmaker
 {
+    public enum mainBet { homeWin, Draw, awayWin };    
+
     public class User
     {
         private string user;
@@ -48,13 +51,33 @@ namespace Bookmaker
     }
     public class FootballMatch : Event
     {
-        private bool betOnHosts;
-        private bool betOnDraw;
-        private bool betOnGuests;
-        private decimal oddsForHosts;
-        private decimal oddsForDraw;
-        private decimal oddsForGuests;
+        private mainBet mainBet;
+        private double oddsForHosts;
+        private double oddsForDraw;
+        private double oddsForGuests;
         private SpecialBets specialBet;
+
+        public mainBet MainBet
+        {
+            get { return mainBet; }
+            set { mainBet = value; }
+        }
+
+        public double OddsForHosts
+        {
+            get { return oddsForHosts; }
+            set { oddsForHosts = value; }
+        }
+        public double OddsForDraw
+        {
+            get { return oddsForDraw; }
+            set { oddsForDraw = value; }
+        }
+        public double OddsForGuests
+        {
+            get { return oddsForGuests; }
+            set { oddsForGuests = value; }
+        }
     }
     public class SpecialBets
     {
@@ -70,16 +93,78 @@ namespace Bookmaker
         Dictionary<uint, Ticket> tickets = new Dictionary<uint, Ticket>();
         private DateTime date;
         private bool isWon;
-        private decimal stake;
-        private decimal odds;
-        private decimal winnings;
+        private double stake;
+        private double odds;
+        private double winnings;
     }
-    public class Ticket
+    public class Ticket : IEnumerable
     {
-        private List<Event> events;
-        private decimal stake;
-        private decimal totalOdds;
-        private decimal estimatedWin;
+        public List<Event> events = new List<Event>();
+        private double stake;
+        private double totalOdds = 1;
+        private double estimatedWin;
+        private int idTicket;
+
+        public double Stake
+        {
+            get { return stake; }
+            set { stake = value; }
+        }
+
+        int position = -1;
+
+        public object Current
+        {
+            get
+            {
+                return Current;
+            }
+        }      
+
+        public bool MoveNext()
+        {
+            position++;
+            return (position < events.Count);
+        }
+
+        public void Reset()
+        {
+            position = -1;
+        }       
+
+        public IEnumerator<Event> GetEnumerator()
+        {
+            return events.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public double CalculateTotalOdds()
+        {
+
+            mainBet selection;
+            foreach (FootballMatch match in this.events)
+            {
+                selection = match.MainBet;
+                switch (selection)
+                {
+                    case mainBet.homeWin: totalOdds *= match.OddsForHosts;
+                        break;
+                    case mainBet.awayWin: totalOdds *= match.OddsForGuests;
+                        break;
+                    case mainBet.Draw: totalOdds *= match.OddsForDraw;
+                        break;
+                }
+            }
+            return totalOdds;
+        }
+        public double CalculateWinnings()
+        {
+            return stake * totalOdds;
+        }
     }
     public class TransactionHistory
     {
