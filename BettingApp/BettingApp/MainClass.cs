@@ -32,7 +32,7 @@ namespace BettingApp
             }
             switch (choice)
             {
-                case "?": Console.WriteLine("Syntax example: Add 300 \"Milan vs Inter\" 2015/12/03/21/00/00");
+                case "?": Console.WriteLine("Syntax example: Add 300 \"Milan vs Inter\" 12/03/2015 21:00:00");
                     break;
                 case "Add": Console.WriteLine("Enter the event's details: code, match and date");
                     if (args.Length != 4)
@@ -47,13 +47,19 @@ namespace BettingApp
                     string format = "MM/dd/yyyy HH:mm:ss";
                     IFormatProvider culture = System.Threading.Thread.CurrentThread.CurrentCulture;
                     DateTime dt2 = DateTime.ParseExact(date, format, culture, System.Globalization.DateTimeStyles.AssumeLocal);
-                    match1.Date = new DateTime(dt2.Year, dt2.Month, dt2.Day, dt2.Hour, dt2.Minute, dt2.Second);                                       
+                    match1.Date = new DateTime(dt2.Year, dt2.Month, dt2.Day, dt2.Hour, dt2.Minute, dt2.Second);
 
-                    if (match1.Date >= DateTime.Now)
+                    if (match1.Date < DateTime.Now)
+                    {
+                        Console.WriteLine("Event already started");                        
+                    }
+                    else
+                    {
                         offer.CurrentOffer.Add(match1);
-                    Console.WriteLine("Event added to the current offer!");
-                    string[] lines = { match1.Code.ToString(), match1.Match, match1.Date.ToString() };
-                    System.IO.File.AppendAllLines(path, lines);
+                        Console.WriteLine("Event added to the current offer!");
+                        string[] lines = { match1.Code.ToString(), match1.Match, match1.Date.ToString() };
+                        System.IO.File.AppendAllLines(path, lines);
+                    }
                     foreach (var current in offer.CurrentOffer)
                     {
                         Console.WriteLine("\n");
@@ -69,11 +75,14 @@ namespace BettingApp
                         break;
                     }
                     Event match = new Event();
-                    match.Code = int.Parse(args[1]);                                                           
-                    
+                    match.Code = int.Parse(args[1]);
+
                     foreach (var value in offer.CurrentOffer)
                         if (match.Code == value.Code)
+                        {
                             offer.CurrentOffer.Remove(value);
+                            break;
+                        }
                     Console.WriteLine("Event removed from the current offer!");
                     System.IO.File.Delete(path);
                     foreach (var current in offer.CurrentOffer)

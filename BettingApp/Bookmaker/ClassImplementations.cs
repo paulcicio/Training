@@ -164,7 +164,7 @@ namespace Bookmaker
         public double CalculateWinnings()
         {
             
-            double winnings = stake * totalOdds;
+            double winnings = stake * totalOdds;           
             if (winnings > 50000)
                 winnings = 50000;
             return winnings;
