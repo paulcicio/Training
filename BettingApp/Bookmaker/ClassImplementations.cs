@@ -40,13 +40,13 @@ namespace Bookmaker
             set { date = value; }
         }
     }
-    public class Events
+    public class Offer
     {
-        private List<Event> currentOffer = new List<Event>();
-        public List<Event> CurrentOffer
+        private List<Event> events = new List<Event>();
+        public List<Event> Events
         {
-            get { return currentOffer; }
-            set { currentOffer = value; }
+            get { return events; }
+            set { events = value; }
         }
     }
     public class FootballMatch : Event
@@ -105,10 +105,19 @@ namespace Bookmaker
         private double estimatedWin;
         private int idTicket;
 
-        public double Stake
+        public Ticket(List<Event> events, double stake)
         {
-            get { return stake; }
-            set { stake = value; }
+            if (stake < 2)
+            {
+                Console.WriteLine("The minimum stake for a bet is 2");
+                return;
+            }
+            this.stake = stake;
+            this.events = events;                                                       
+        }
+        public Ticket()
+        {
+
         }
 
         int position = -1;
@@ -161,6 +170,16 @@ namespace Bookmaker
             }
             return totalOdds;
         }
+
+        public double ReturnStake()
+        {
+            return stake;
+        }
+
+        public void SetStake(double value)
+        {
+            stake = value;
+        }
         public double CalculateWinnings()
         {
             
@@ -168,6 +187,13 @@ namespace Bookmaker
             if (winnings > 50000)
                 winnings = 50000;
             return winnings;
+        }
+        public static string GenerateRandomTicketCode()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, 7)
+              .Select(s => s[random.Next(s.Length)]).ToArray()); //E.g. W12x040
         }
     }
     public class TransactionHistory

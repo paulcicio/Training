@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bookmaker;
+using Should;
 
 namespace BettingApp
 {
@@ -12,27 +13,38 @@ namespace BettingApp
         static void Main(string[] args)
         {
             string path = @"C:\Users\PaulCicio\Documents\Visual Studio 2015\Projects\Training\BettingApp\BettingApp\bin\Debug\CurrentOffer.txt";
+            string path2 = @"C:\Users\PaulCicio\Documents\Visual Studio 2015\Projects\Training\BettingApp\BettingApp\bin\Debug\Odds.txt";
             if (args.Count() == 0)
             {
                 Console.WriteLine("Hint: First argument should be Add or Remove");
                 return;
             }
             string choice = args[0];
-            Events offer = new Events();
+            Offer offer = new Offer();
             if (!System.IO.File.Exists(path)) 
                 System.IO.File.Create(path);           
             string[] readLines = System.IO.File.ReadAllLines(path);
             for(int i=0; i < readLines.Length; i+=3)
             {
-                Event currentEvent = new Event();
+                FootballMatch currentEvent = new FootballMatch();
                 currentEvent.Code = int.Parse(readLines[i]);
                 currentEvent.Match = readLines[i+1];
                 currentEvent.Date = DateTime.Parse((readLines[i+2]));
-                offer.CurrentOffer.Add(currentEvent); 
+                offer.Events.Add(currentEvent); 
+            }
+            if (!System.IO.File.Exists(path2))
+                System.IO.File.Create(path2);
+            string[] readLines2 = System.IO.File.ReadAllLines(path2);
+            for (int i = 0; i < readLines2.Length; i += 2)
+            {
+                FootballMatch currentEvent = new FootballMatch();
+                currentEvent.Code = int.Parse(readLines[i]);
+                
+                
             }
             switch (choice)
             {
-                case "?": Console.WriteLine("Syntax example: Add 300 \"Milan vs Inter\" 12/03/2015 21:00:00");
+                case "?": Console.WriteLine("Syntax example: Add 300 \"Milan vs Inter\" 12/03/2015 21:00:00, Remove 300, New 300 X 10");
                     break;
                 case "Add": Console.WriteLine("Enter the event's details: code, match and date");
                     if (args.Length != 4)
@@ -54,13 +66,14 @@ namespace BettingApp
                         Console.WriteLine("Event already started");                        
                     }
                     else
-                    {
-                        offer.CurrentOffer.Add(match1);
+                    {                        
+                        if (!offer.Events.Contains(match1))
+                            offer.Events.Add(match1);
                         Console.WriteLine("Event added to the current offer!");
                         string[] lines = { match1.Code.ToString(), match1.Match, match1.Date.ToString() };
                         System.IO.File.AppendAllLines(path, lines);
                     }
-                    foreach (var current in offer.CurrentOffer)
+                    foreach (var current in offer.Events)
                     {
                         Console.WriteLine("\n");
                         Console.WriteLine("Match code: " + current.Code);
@@ -77,15 +90,15 @@ namespace BettingApp
                     Event match = new Event();
                     match.Code = int.Parse(args[1]);
 
-                    foreach (var value in offer.CurrentOffer)
+                    foreach (var value in offer.Events)
                         if (match.Code == value.Code)
                         {
-                            offer.CurrentOffer.Remove(value);
+                            offer.Events.Remove(value);
                             break;
                         }
                     Console.WriteLine("Event removed from the current offer!");
                     System.IO.File.Delete(path);
-                    foreach (var current in offer.CurrentOffer)
+                    foreach (var current in offer.Events)
                     {
                         Console.WriteLine("\n");
                         Console.WriteLine("Match code: " + current.Code);
@@ -94,6 +107,21 @@ namespace BettingApp
                         string[] line = { current.Code.ToString(), current.Match, current.Date.ToString() };
                         System.IO.File.AppendAllLines(path, line);
                     }
+                    break;
+                case "New": Console.WriteLine("Place your bets please. Enter the match's code, the selection and the stake");
+                    if (args.Length <= 3)
+                    {
+                        Console.WriteLine("Syntax error! Check the help for examples");
+                        break;
+                    }
+                    FootballMatch event1 = new FootballMatch();
+                    event1.Code = int.Parse(args[1]);
+                    event1.MainBet = (mainBet) int.Parse(args[2]);
+                    Ticket ticket = new Ticket();
+                    ticket.events.Add(event1);
+                    ticket.SetStake(100);
+                    ticket.ReturnStake();
+
                     break;
                 default: Console.WriteLine("Hint: First argument should be Add or Remove");
                     break;
