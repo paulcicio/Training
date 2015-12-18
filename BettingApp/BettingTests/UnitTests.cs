@@ -161,7 +161,7 @@ namespace BettingTests
             match1.Date = date;
             match1.MainBet = mainBet.awayWin;
             match1.OddsForGuests = 1.5;
-            Ticket ticket = new Ticket();
+            Ticket ticket = new Ticket(10);
             ticket.events.Add(match1);
             DateTime date2 = new DateTime(2015, 12, 04, 21, 45, 00);
             FootballMatch match2 = new FootballMatch();
@@ -171,9 +171,7 @@ namespace BettingTests
             match2.MainBet = mainBet.Draw;
             match2.OddsForDraw = 3.2;
             ticket.events.Add(match2);
-            double totalOdds = Math.Round(ticket.CalculateTotalOdds(), 1);
-            ticket.SetStake(10);
-            ticket.ReturnStake();
+            double totalOdds = Math.Round(ticket.CalculateTotalOdds(), 1);                        
             double actual = Math.Round(ticket.CalculateWinnings(), 1);
             Assert.AreEqual(48, actual);
         }

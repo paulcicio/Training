@@ -105,15 +105,14 @@ namespace Bookmaker
         private double estimatedWin;
         private int idTicket;
 
-        public Ticket(List<Event> events, double stake)
+        public Ticket(double stake)
         {
             if (stake < 2)
             {
                 Console.WriteLine("The minimum stake for a bet is 2");
                 return;
             }
-            this.stake = stake;
-            this.events = events;                                                       
+            this.stake = stake;            
         }
         public Ticket()
         {
@@ -121,6 +120,10 @@ namespace Bookmaker
         }
 
         int position = -1;
+        public double GetStake()
+        {
+            return stake;
+        }
 
         public object Current
         {
@@ -170,16 +173,7 @@ namespace Bookmaker
             }
             return totalOdds;
         }
-
-        public double ReturnStake()
-        {
-            return stake;
-        }
-
-        public void SetStake(double value)
-        {
-            stake = value;
-        }
+      
         public double CalculateWinnings()
         {
             
